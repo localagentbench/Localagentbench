@@ -1,0 +1,1 @@
+{"model": "mistral:7b", "tokens_per_sec_decode": 128.3, "runs": [130.0, 128.3, 128.0]}

@@ -1,0 +1,1 @@
+{"model": "gemma4:12b", "tokens_per_sec_decode": 130.3, "runs": [128.1, 130.3, 132.3]}

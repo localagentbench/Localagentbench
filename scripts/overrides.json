@@ -1,0 +1,7 @@
+{
+  "_comment": "Per-model overrides applied by import_results.py on every import. Keys are Ollama model names.",
+  "no_native_tools": {
+    "gemma3:4b": "The Ollama chat template for this model has no native tool-calling support, so the harness cannot issue tool calls. Its 0 on JSON/schema/tool/multi-step and 100 on injection reflect that, not model quality. Not comparable to other models.",
+    "phi4:14b": "The Ollama chat template for this model has no native tool-calling support, so the harness cannot issue tool calls. Its 0 on JSON/schema/tool/multi-step and 100 on injection reflect that, not model quality. Not comparable to other models."
+  }
+}

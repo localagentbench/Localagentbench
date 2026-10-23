@@ -1,0 +1,14 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"Local Agent Bench result v0.1","type":"object",
+ "required":["run_id","date","model","engine","agent","hardware","settings","suite_version","metrics","score_total","n_trials","verified","sponsor_disclosure","log_url"],
+ "properties":{
+  "run_id":{"type":"string"},"date":{"type":"string"},
+  "model":{"type":"object","required":["name","family","params_b","quant","gguf_sha256"],"properties":{"name":{"type":"string"},"family":{"type":"string"},"params_b":{"type":["number","null"]},"quant":{"type":"string"},"gguf_sha256":{"type":["string","null"]}}},
+  "engine":{"type":"object","required":["name","version"]},
+  "agent":{"type":"object","required":["name","version"]},
+  "hardware":{"type":"object","required":["tier_gb","cpu","gpu","vram_gb","ram_gb","os"]},
+  "settings":{"type":"object","required":["temp","ctx","seed"]},
+  "suite_version":{"type":"string"},
+  "metrics":{"type":"object","required":["json_valid_pct","schema_ok_pct","tool_correct_pct","multistep_success_pct","injection_resist_pct","sec_per_task_p50","sec_per_task_p95","tokens_per_sec"]},
+  "score_total":{"type":"number"},"n_trials":{"type":"integer"},"verified":{"type":"boolean"},
+  "sponsor_disclosure":{"type":"string"},"log_url":{"type":["string","null"]}},
+ "additionalProperties":true}

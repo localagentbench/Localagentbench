@@ -1,0 +1,7 @@
+{
+ "general.architecture": "phi3",
+ "general.name": "Phi 4",
+ "general.organization": "Microsoft",
+ "general.basename": "phi",
+ "tokenizer.chat_template": "{% for message in messages %}{% if (message['role'] == 'system') %}{{'<|im_start|>system<|im_sep|>' + message['content'] + '<|im_end|>'}}{% elif (message['role'] == 'user') %}{{'<|im_start|>user<|im_sep|>' + message['content'] + '<|im_end|><|im_start|>assistant<|im_sep|>'}}{% elif (message['role'] == 'assistant') %}{{message['content'] + '<|im_end|>'}}{% endif %}{% endfor %}"
+}

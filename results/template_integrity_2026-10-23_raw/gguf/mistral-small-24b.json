@@ -1,0 +1,7 @@
+{
+ "general.architecture": "llama",
+ "general.name": "Mistral Small 24B Instruct 2501",
+ "general.basename": "Mistral-Small",
+ "general.base_model.0.repo_url": "https://huggingface.co/mistralai/Mistral-Small-Base-2501",
+ "tokenizer.chat_template": "{{ bos_token }}{% for message in messages %}{% if message['role'] == 'user' %}{{ '[INST]' + message['content'] + '[/INST]' }}{% elif message['role'] == 'system' %}{{ '[SYSTEM_PROMPT]' + message['content'] + '[/SYSTEM_PROMPT]' }}{% elif message['role'] == 'assistant' %}{{ message['content'] + eos_token }}{% else %}{{ raise_exception('Only user, system and assistant roles are supported!') }}{% endif %}{% endfor %}"
+}

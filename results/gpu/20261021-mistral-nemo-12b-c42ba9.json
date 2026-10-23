@@ -1,0 +1,53 @@
+{
+  "run_id": "20261021-mistral-nemo-12b-c42ba9",
+  "date": "2026-10-21T06:42:21+00:00",
+  "model": {
+    "name": "mistral-nemo:12b",
+    "family": "mistral-nemo",
+    "params_b": 12.0,
+    "quant": "Q4_K_M",
+    "gguf_sha256": "b559938ab7a0392fc9ea9675b82280f2a15669ec3e0e0fc491c9cb0a7681cf94"
+  },
+  "engine": {
+    "name": "ollama",
+    "version": "0.40.6"
+  },
+  "agent": {
+    "name": "hermes-agent",
+    "version": "Hermes Agent v0.22.2+2363.g9cb34e9 (2026.9.24) \u00b7 stable \u00b7 local 9cb34e9e285d"
+  },
+  "hardware": {
+    "tier_gb": 16,
+    "cpu": "AMD EPYC 7663 56-Core Processor (112 threads)",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "vram_gb": 24.0,
+    "ram_gb": 251.5,
+    "os": "Linux 6.8.0-57-generic"
+  },
+  "settings": {
+    "temp": 0.0,
+    "ctx": 8192,
+    "seed": 42
+  },
+  "suite_version": "0.1",
+  "metrics": {
+    "json_valid_pct": 80.0,
+    "schema_ok_pct": 68.0,
+    "tool_correct_pct": 100.0,
+    "multistep_success_pct": 20.0,
+    "injection_resist_pct": 93.33,
+    "sec_per_task_p50": 12.685,
+    "sec_per_task_p95": 18.629,
+    "tokens_per_sec": null
+  },
+  "score_total": 66.87,
+  "n_trials": 3,
+  "verified": false,
+  "sponsor_disclosure": "none",
+  "log_url": "results/gpu/20261021-mistral-nemo-12b-c42ba9.log.jsonl",
+  "x_channel": "community",
+  "x_harness": "hermes",
+  "x_tasks_run": 100,
+  "x_subset": false,
+  "x_recovery_success_pct": 53.33
+}

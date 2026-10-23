@@ -1,0 +1,500 @@
+{
+ "deepseek-r1-14b": {
+  "name": "deepseek-r1:14b",
+  "gguf_sha256": [
+   "6e9f90f02bb3b39b59e81916e8cfce9deb45aeaeb9a54a5be4414486b907dc1e"
+  ],
+  "model_layer": "sha256:6e9f90f02bb3b39b59e81916e8cfce9deb45aeaeb9a54a5be4414486b907dc1e",
+  "template_digest": "sha256:c5ad996bda6eed4df6e3b605a9869647624851ac248209d22fd5e2c0cc1121d3",
+  "params_digest": "sha256:f4d24e9138dd4603380add165d2b0d970bef471fac194b436ebd50e6147c6588",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:3c24b0c80794f0eb6e0de0033f8e3203075db1c4640e837e097712a4b88d393b",
+  "go_literals_not_in_ref": [
+   "<think>\n\n</think>"
+  ]
+ },
+ "deepseek-r1-8b": {
+  "name": "deepseek-r1:8b",
+  "gguf_sha256": [
+   "e6a7edc1a4d7d9b2de136a221a57336b76316cfe53a252aeba814496c5ae439d"
+  ],
+  "model_layer": "sha256:e6a7edc1a4d7d9b2de136a221a57336b76316cfe53a252aeba814496c5ae439d",
+  "template_digest": "sha256:c5ad996bda6eed4df6e3b605a9869647624851ac248209d22fd5e2c0cc1121d3",
+  "params_digest": "sha256:ed8474dc73db8ca0d85c1958c91c3a444e13a469c2efb10cd777ca9baeaddcb7",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:f64cd5418e4b038ef90cf5fab6eb7ce6ae8f18909416822751d3b9fca827c2ab",
+  "go_literals_not_in_ref": [
+   "<think>\n\n</think>"
+  ]
+ },
+ "gemma3-4b": {
+  "name": "gemma3:4b",
+  "gguf_sha256": [
+   "f06e91e18fc74295d0c781bf91622508c75655e2c18ed869d52447ffe1e667e1",
+   "f06e91e18fc74295d0c781bf91622508c75655e2c18ed869d52447ffe1e667e1"
+  ],
+  "model_layer": "sha256:f06e91e18fc74295d0c781bf91622508c75655e2c18ed869d52447ffe1e667e1",
+  "template_digest": "sha256:e0a42594d802e5d31cdc786deb4823edb8adff66094d49de8fffe976d753e348",
+  "params_digest": "sha256:3116c52250752e00dd06b16382e952bd33c34fd79fc4fe3a5d2c77cf7de1b14b",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:4bf7b0a45f1af5d9f6f8b847044d8379eef6b36f3ca8b4dcc63a8dfed7426e53",
+  "go_literals_not_in_ref": [
+   "<start_of_turn>user"
+  ]
+ },
+ "gemma4-12b": {
+  "name": "gemma4:12b",
+  "gguf_sha256": [
+   "bb722270d54346adc198f213851dbe0207e87c3ecf2a0aff4d92262726215391"
+  ],
+  "model_layer": "sha256:bb722270d54346adc198f213851dbe0207e87c3ecf2a0aff4d92262726215391",
+  "template_digest": "sha256:b507b9c2f6ca642bffcd06665ea7c91f235fd32daeefdf875a0f938db05fb315",
+  "params_digest": "sha256:2365fbb6d97bf654fdda0353b7505baa2254c662122cff0f153e4b47e6220ded",
+  "sha_match": true,
+  "renderer": "gemma4",
+  "parser": "gemma4",
+  "config_digest": "sha256:e5ca99f918964e7d5a912f974eae708ae59370883a5b182fc0660fe7adf3f0e4",
+  "go_literals_not_in_ref": []
+ },
+ "gemma4-26b": {
+  "name": "gemma4:26b",
+  "gguf_sha256": [
+   "a8bdd07a49b895083bb1420bb895ad9ab3e3b8f7d5cc42c7582ca0fa765eede2"
+  ],
+  "model_layer": "sha256:a8bdd07a49b895083bb1420bb895ad9ab3e3b8f7d5cc42c7582ca0fa765eede2",
+  "template_digest": "sha256:b507b9c2f6ca642bffcd06665ea7c91f235fd32daeefdf875a0f938db05fb315",
+  "params_digest": "sha256:2365fbb6d97bf654fdda0353b7505baa2254c662122cff0f153e4b47e6220ded",
+  "sha_match": true,
+  "renderer": "gemma4",
+  "parser": "gemma4",
+  "config_digest": "sha256:cd16db7156ed565454ebd05c77012323f4df73ab8d80d28519cc3afe57426b89",
+  "go_literals_not_in_ref": []
+ },
+ "gemma4-e4b": {
+  "name": "gemma4:e4b",
+  "gguf_sha256": [
+   "370c2879f17648d337b0ab4e208fdce348e24d1060064e93d7645daafd56d39c"
+  ],
+  "model_layer": "sha256:370c2879f17648d337b0ab4e208fdce348e24d1060064e93d7645daafd56d39c",
+  "template_digest": "sha256:b507b9c2f6ca642bffcd06665ea7c91f235fd32daeefdf875a0f938db05fb315",
+  "params_digest": "sha256:2365fbb6d97bf654fdda0353b7505baa2254c662122cff0f153e4b47e6220ded",
+  "sha_match": true,
+  "renderer": "gemma4",
+  "parser": "gemma4",
+  "config_digest": "sha256:7ca1ae564b24fefd47da34cc579b906b75024860ed4e5bfbfa6d6cbd9777cee5",
+  "go_literals_not_in_ref": []
+ },
+ "gpt-oss-20b": {
+  "name": "gpt-oss:20b",
+  "gguf_sha256": [
+   "8ecb5d4ad6172c63f9cbf1a07a04e525985a8a11a6e516da02b674c4010de716"
+  ],
+  "model_layer": "sha256:8ecb5d4ad6172c63f9cbf1a07a04e525985a8a11a6e516da02b674c4010de716",
+  "template_digest": "sha256:fa6710a93d78da62641e192361344be7a8c0a1c3737f139cf89f20ce1626b99c",
+  "params_digest": "sha256:d8ba2f9a17b3bbdeb5690efaa409b3fcb0b56296a777c7a69c78aa33bbddf182",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:e103573196b6deeff79ec124b4131b4fad700cee60b584a8f9d689ffed115038",
+  "go_literals_not_in_ref": [
+   "<|start|>system<|message|>You are ChatGPT, a large language model trained by OpenAI.\nKnowledge cutoff: 2024-06\nCurrent date:",
+   "Reasoning: medium",
+   "## browser\n\n// Tool for browsing.\n// The `cursor` appears in brackets before each browsing display: `[{cursor}]`.\n// Cite information from the tool using the following format:\n// `\u3010{cursor}\u2020L{line_start}(-L{line_end})?\u3011`, for example: `\u30106\u2020L9-L11\u3011` or `\u30108\u2020L3\u3011`.\n// Do not quote more than 10 words directly from the tool output.\n// sources=web (default: web)\nnamespace browser {",
+   "// Searches for information related to `query` and displays `topn` results.\ntype search = (_: {\nquery: string,\ntopn?: number, // default: 10\nsource?: string,\n}) => any;",
+   "// Opens the link `id` from the page indicated by `cursor` starting at line number `loc`, showing `num_lines` lines.\n// Valid link ids are displayed with the formatting: `\u3010{id}\u2020.*\u3011`.\n// If `cursor` is not provided, the most recent page is implied.\n// If `id` is a string, it is treated as a fully qualified URL associated with `source`.\n// If `loc` is not provided, the viewport will be positioned at the beginning of the document or centered on the most relevant passage, if available.\n// Use this function without `id` to scroll to a new location of an opened page.\ntype open = (_: {\nid?: number | string, // default: -1\ncursor?: number, // default: -1\nloc?: number, // default: -1\nnum_lines?: number, // default: -1\nview_source?: boolean, // default: false\nsource?: string,\n}) => any;",
+   "// Finds exact matches of `pattern` in the current page, or the page given by `cursor`.\ntype find = (_: {\npattern: string,\ncursor?: number, // default: -1\n}) => any;",
+   "## python\n\nUse this tool to execute Python code in your chain of thought. The code will not be shown to the user. This tool should be used for internal reasoning, but not for code that is intended to be visible to the user (e.g. when creating plots, tables, or files).\n\nWhen you send a message containing Python code to python, it will be executed in a stateful Jupyter notebook environment. python will respond with the output of the execution or time out after 120.0 seconds. The drive at '/mnt/data' can be used to save and persist user files. Internet access for this session is UNKNOWN. Depends on the cluster.",
+   "# Tools\n\n## functions\n\nnamespace functions {",
+   "} // namespace functions",
+   "to=assistant<|message|>",
+   "to=assistant<|message|>",
+   "<|constrain|>json<|message|>"
+  ]
+ },
+ "hermes3-8b": {
+  "name": "hermes3:8b",
+  "gguf_sha256": [
+   "c8985d236593f7a17da2a3da49588aa951a9b1e57ce97753364fbf59e63af84a",
+   "c8985d236593f7a17da2a3da49588aa951a9b1e57ce97753364fbf59e63af84a"
+  ],
+  "model_layer": "sha256:c8985d236593f7a17da2a3da49588aa951a9b1e57ce97753364fbf59e63af84a",
+  "template_digest": "sha256:c7ec478a7939bd2449e43dde848f31c31bc68b75990d4085ced5ac30f299b24a",
+  "params_digest": "sha256:f02dd72bb2423204352eabc5637b44d79d17f109fdb510a7c51455892aa2d216",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:9dfddf59cf5a85558d8b782db72c12e934b9b539ae48af03861938e4c383c167",
+  "go_literals_not_in_ref": [
+   "</tools> Use the following pydantic model json schema for each tool call you will make: {\"properties\": {\"arguments\": {\"title\": \"Arguments\", \"type\": \"object\"}, \"name\": {\"title\": \"Name\", \"type\": \"string\"}}, \"required\": [\"arguments\", \"name\"], \"title\": \"FunctionCall\", \"type\": \"object\"} For each function call return a json object with function name and arguments within <tool_call></tool_call> XML tags as follows:\n<tool_call>\n{\"arguments\": <args-dict>, \"name\": <function-name>}\n</tool_call>",
+   "<|im_start|>user",
+   "<|im_start|>user\n<tool_response>",
+   "</tool_response><|im_end|>",
+   "<|im_start|>user"
+  ]
+ },
+ "llama3.1-8b": {
+  "name": "llama3.1:8b",
+  "gguf_sha256": [
+   "667b0c1932bc6ffc593ed1d03f895bf2dc8dc6df21db3042284a6f4416b06a29",
+   "667b0c1932bc6ffc593ed1d03f895bf2dc8dc6df21db3042284a6f4416b06a29"
+  ],
+  "model_layer": "sha256:667b0c1932bc6ffc593ed1d03f895bf2dc8dc6df21db3042284a6f4416b06a29",
+  "template_digest": "sha256:948af2743fc78a328dcb3b0f5a31b3d75f415840fdb699e8b1235978392ecf85",
+  "params_digest": "sha256:56bb8bd477a519ffa694fc449c2413c6f0e1d3b1c88fa7e3c9d88d3ae49d4dcb",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:455f34728c9b5dd3376378bfb809ee166c145b0b4c1f1a6feca069055066ef9a",
+  "go_literals_not_in_ref": [
+   "Cutting Knowledge Date: December 2023\n\nWhen you receive a tool call response, use the output to format an answer to the orginal user question.\n\nYou are a helpful assistant with tool calling capabilities.",
+   "Given the following functions, please respond with a JSON for a function call with its proper arguments that best answers the given prompt.\n\nRespond in the format {\"name\": function name, \"parameters\": dictionary of argument name and its value}. Do not use variables.",
+   "\", \"parameters\":"
+  ]
+ },
+ "llama3.2-3b": {
+  "name": "llama3.2:3b",
+  "gguf_sha256": [
+   "dde5aa3fc5ffc17176b5e8bdc82f587b24b2678c6c66101bf7da77af9f7ccdff",
+   "dde5aa3fc5ffc17176b5e8bdc82f587b24b2678c6c66101bf7da77af9f7ccdff"
+  ],
+  "model_layer": "sha256:dde5aa3fc5ffc17176b5e8bdc82f587b24b2678c6c66101bf7da77af9f7ccdff",
+  "template_digest": "sha256:966de95ca8a62200913e3f8bfbf84c8494536f1b94b49166851e76644e966396",
+  "params_digest": "sha256:56bb8bd477a519ffa694fc449c2413c6f0e1d3b1c88fa7e3c9d88d3ae49d4dcb",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:34bb5ab01051a11372a91f95f3fbbc51173eed8e7f13ec395b9ae9b8bd0e242b",
+  "go_literals_not_in_ref": [
+   "<|start_header_id|>system<|end_header_id|>\n\nCutting Knowledge Date: December 2023",
+   "When you receive a tool call response, use the output to format an answer to the orginal user question.\n\nYou are a helpful assistant with tool calling capabilities.",
+   "Given the following functions, please respond with a JSON for a function call with its proper arguments that best answers the given prompt.\n\nRespond in the format {\"name\": function name, \"parameters\": dictionary of argument name and its value}. Do not use variables.",
+   "\", \"parameters\":"
+  ]
+ },
+ "mistral-nemo-12b": {
+  "name": "mistral-nemo:12b",
+  "gguf_sha256": [
+   "b559938ab7a0392fc9ea9675b82280f2a15669ec3e0e0fc491c9cb0a7681cf94",
+   "b559938ab7a0392fc9ea9675b82280f2a15669ec3e0e0fc491c9cb0a7681cf94"
+  ],
+  "model_layer": "sha256:b559938ab7a0392fc9ea9675b82280f2a15669ec3e0e0fc491c9cb0a7681cf94",
+  "template_digest": "sha256:438402ddac7513a63010a594fbd69a11d74b7843ee686e9dc4589c01241c075a",
+  "params_digest": "sha256:ed11eda7790d05b49395598a42b155812b17e263214292f7b87d15e14003d337",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:65d37de20e5951c7434ad4230c51a4d5be99b8cb7407d2135074d82c40b44b45",
+  "go_literals_not_in_ref": []
+ },
+ "mistral-small3.2-24b": {
+  "name": "mistral-small3.2:24b",
+  "gguf_sha256": [
+   "41a5b0c36a28a3a0480ce2e4007d3a21e3298be70e2b9a103960581412997dca"
+  ],
+  "model_layer": "sha256:41a5b0c36a28a3a0480ce2e4007d3a21e3298be70e2b9a103960581412997dca",
+  "template_digest": "sha256:706c4d1164f7f1bbce2a852f2bc9cfa66b98d24f79300b9034388e07fcda98c8",
+  "system_digest": "sha256:9c810f69c610d59a322085379f81ad72814b84916a1c3d0262cf1b1114bbfb36",
+  "params_digest": "sha256:e0daf17ff83eace4813f9e8554b262f6cc33ad880ff8df41a156ff9ef5522ddb",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:7ae301728ba8f217be575419ca950190a4d43cfa293ffa9732ce6eb6498d7f6d",
+  "go_literals_not_in_ref": [
+   "[/SYSTEM_PROMPT]",
+   "[AVAILABLE_TOOLS]",
+   "[/AVAILABLE_TOOLS]",
+   "[TOOL_RESULTS]{\"content\":",
+   "}[/TOOL_RESULTS]"
+  ]
+ },
+ "mistral-small-24b": {
+  "name": "mistral-small:24b",
+  "gguf_sha256": [
+   "102a747c137683e81d431dab05d8f2158df4ab6f162f8f9019425a43d51e0e9f"
+  ],
+  "model_layer": "sha256:102a747c137683e81d431dab05d8f2158df4ab6f162f8f9019425a43d51e0e9f",
+  "template_digest": "sha256:6db27cd4e277c91264572b9c899c1980daa8dea11e902f0070a6f4763f3d13c8",
+  "system_digest": "sha256:6d7b25ffd24789fb9fb5c5ba702a4ae77fa8ba27ecf868442278611161511fc6",
+  "params_digest": "sha256:e0daf17ff83eace4813f9e8554b262f6cc33ad880ff8df41a156ff9ef5522ddb",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:41ffc852c4b6c4804f0520c43a705fd13eb627445bcd80bff8bfa25e09ecd178",
+  "go_literals_not_in_ref": [
+   "[AVAILABLE_TOOLS]",
+   "[/AVAILABLE_TOOLS]",
+   "[TOOL_RESULTS]{\"content\":",
+   "}[/TOOL_RESULTS]"
+  ]
+ },
+ "mistral-7b": {
+  "name": "mistral:7b",
+  "gguf_sha256": [
+   "f5074b1221da0f5a2910d33b642efa5b9eb58cfdddca1c79e16d7ad28aa2b31f"
+  ],
+  "model_layer": "sha256:f5074b1221da0f5a2910d33b642efa5b9eb58cfdddca1c79e16d7ad28aa2b31f",
+  "template_digest": "sha256:1ff5b64b61b9a63146475a24f70d3ca2fd6fdeec44247987163479968896fc0b",
+  "params_digest": "sha256:ed11eda7790d05b49395598a42b155812b17e263214292f7b87d15e14003d337",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:1064e17101bdd2460dd5c4e03e4f5cc1b38a4dee66084dc91faba294ccb64a92",
+  "go_literals_not_in_ref": [
+   "} [/TOOL_RESULTS]"
+  ]
+ },
+ "phi4-14b": {
+  "name": "phi4:14b",
+  "gguf_sha256": [
+   "fd7b6731c33c57f61767612f56517460ec2d1e2e5a3f0163e0eb3d8d8cb5df20"
+  ],
+  "model_layer": "sha256:fd7b6731c33c57f61767612f56517460ec2d1e2e5a3f0163e0eb3d8d8cb5df20",
+  "template_digest": "sha256:32695b892af87ef8fca6e13a1a31c67c1441d7398be037e366e2fc763857c06a",
+  "params_digest": "sha256:45a1c652dddc9efdcefa977ab81cfbe26b6e52bc8e78f2f4c698538783e0ac80",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:f5d6f49c64775df1536e9d747c6b6b4c101f6a8658108fbd18a15d046575c68b",
+  "go_literals_not_in_ref": [
+   "<|im_end|>\n<|im_start|>assistant<|im_sep|>"
+  ]
+ },
+ "qwen2.5-coder-14b": {
+  "name": "qwen2.5-coder:14b",
+  "gguf_sha256": [
+   "ac9bc7a69dab38da1c790838955f1293420b55ab555ef6b4615efa1c1507b1ed"
+  ],
+  "model_layer": "sha256:ac9bc7a69dab38da1c790838955f1293420b55ab555ef6b4615efa1c1507b1ed",
+  "system_digest": "sha256:66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e",
+  "template_digest": "sha256:1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:0578f229f23ad620e123654fd0b4708405e7af3629ec1aecf3f553f54e06bc40",
+  "go_literals_not_in_ref": [
+   "# Tools\n\nYou may call one or more functions to assist with the user query.\n\nYou are provided with function signatures within <tools></tools>:\n<tools>",
+   "{\"type\": \"function\", \"function\":",
+   "</tools>\n\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> with NO other text. Do not include any backticks or ```json.\n<tool_call>\n{\"name\": <function-name>, \"arguments\": <args-json-object>}\n</tool_call>",
+   "<|im_start|>user\n<tool_response>",
+   "</tool_response><|im_end|>"
+  ]
+ },
+ "qwen2.5-coder-7b": {
+  "name": "qwen2.5-coder:7b",
+  "gguf_sha256": [
+   "60e05f2100071479f596b964f89f510f057ce397ea22f2833a0cfe029bfc2463",
+   "60e05f2100071479f596b964f89f510f057ce397ea22f2833a0cfe029bfc2463"
+  ],
+  "model_layer": "sha256:60e05f2100071479f596b964f89f510f057ce397ea22f2833a0cfe029bfc2463",
+  "system_digest": "sha256:66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e",
+  "template_digest": "sha256:1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:d9bb33f2786931fea42f50936a2424818aa2f14500638af2f01861eb2c8fb446",
+  "go_literals_not_in_ref": [
+   "# Tools\n\nYou may call one or more functions to assist with the user query.\n\nYou are provided with function signatures within <tools></tools>:\n<tools>",
+   "{\"type\": \"function\", \"function\":",
+   "</tools>\n\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> with NO other text. Do not include any backticks or ```json.\n<tool_call>\n{\"name\": <function-name>, \"arguments\": <args-json-object>}\n</tool_call>",
+   "<|im_start|>user\n<tool_response>",
+   "</tool_response><|im_end|>"
+  ]
+ },
+ "qwen2.5-14b": {
+  "name": "qwen2.5:14b",
+  "gguf_sha256": [
+   "2049f5674b1e92b4464e5729975c9689fcfbf0b0e4443ccf10b5339f370f9a54",
+   "2049f5674b1e92b4464e5729975c9689fcfbf0b0e4443ccf10b5339f370f9a54"
+  ],
+  "model_layer": "sha256:2049f5674b1e92b4464e5729975c9689fcfbf0b0e4443ccf10b5339f370f9a54",
+  "system_digest": "sha256:66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e",
+  "template_digest": "sha256:eb4402837c7829a690fa845de4d7f3fd842c2adee476d5341da8a46ea9255175",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:db59b814cab753a51167db007fa6b6e0095f678ff24c9f7284753b75b34c6df3",
+  "go_literals_not_in_ref": [
+   "{\"type\": \"function\", \"function\":",
+   "<|im_start|>user\n<tool_response>",
+   "</tool_response><|im_end|>"
+  ]
+ },
+ "qwen2.5-7b": {
+  "name": "qwen2.5:7b",
+  "gguf_sha256": [
+   "2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730",
+   "2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730"
+  ],
+  "model_layer": "sha256:2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730",
+  "system_digest": "sha256:66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e",
+  "template_digest": "sha256:eb4402837c7829a690fa845de4d7f3fd842c2adee476d5341da8a46ea9255175",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:2f15b3218f0552c60647ce60ada83632d2c09755b16259b13e3e4458e9ae419d",
+  "go_literals_not_in_ref": [
+   "{\"type\": \"function\", \"function\":",
+   "<|im_start|>user\n<tool_response>",
+   "</tool_response><|im_end|>"
+  ]
+ },
+ "qwen3-coder-30b": {
+  "name": "qwen3-coder:30b",
+  "gguf_sha256": [
+   "1194192cf2a187eb02722edcc3f77b11d21f537048ce04b67ccf8ba78863006a"
+  ],
+  "model_layer": "sha256:1194192cf2a187eb02722edcc3f77b11d21f537048ce04b67ccf8ba78863006a",
+  "params_digest": "sha256:69aa441ea44ff5e1e7b56cac4f471e71e8a5e2e3963c29684a9234d5d5e5f7aa",
+  "sha_match": true,
+  "renderer": "qwen3-coder",
+  "parser": "qwen3-coder",
+  "config_digest": "sha256:24a94682582c6045f4950846fc7711479dcecb478b86759f0306a2ef8484d318",
+  "go_literals_not_in_ref": []
+ },
+ "qwen3-vl-8b": {
+  "name": "qwen3-vl:8b",
+  "gguf_sha256": [
+   "9c3e4853af40205c11b5d1000dfcf08e96454adfd872e48b934cd67d59ec3097"
+  ],
+  "model_layer": "sha256:9c3e4853af40205c11b5d1000dfcf08e96454adfd872e48b934cd67d59ec3097",
+  "params_digest": "sha256:f6417cb1e26962991f8e875a93f3cb0f92bc9b4955e004881251ccbf934a19d2",
+  "sha_match": true,
+  "renderer": "qwen3-vl-thinking",
+  "parser": "qwen3-vl-thinking",
+  "config_digest": "sha256:0392486d6b5d62748f069599bfce3727b9e5c9ccb7145214f68f8c1627da5f5a",
+  "go_literals_not_in_ref": []
+ },
+ "qwen3.5-27b": {
+  "name": "qwen3.5:27b",
+  "gguf_sha256": [
+   "c7e0e920a0948849beb7074d8368cbd5ac6825fcd1f2450cf851276325d8a6a5"
+  ],
+  "model_layer": "sha256:c7e0e920a0948849beb7074d8368cbd5ac6825fcd1f2450cf851276325d8a6a5",
+  "template_digest": "sha256:b507b9c2f6ca642bffcd06665ea7c91f235fd32daeefdf875a0f938db05fb315",
+  "params_digest": "sha256:9371364b27a52acac9d87f88bd93c9db1174d8d6ec57f6888925cdc1788871ff",
+  "sha_match": true,
+  "renderer": "qwen3.5",
+  "parser": "qwen3.5",
+  "config_digest": "sha256:16b6756ba0c1bfdced2ffe421d43b1d172fc4b875274e3531b039b9428bfe92e",
+  "go_literals_not_in_ref": []
+ },
+ "qwen3.5-9b": {
+  "name": "qwen3.5:9b",
+  "gguf_sha256": [
+   "02d45dc1cf451ba2475ac33b301c2dd8f985abe4c182ce04a1f2f5bf0260278d"
+  ],
+  "model_layer": "sha256:02d45dc1cf451ba2475ac33b301c2dd8f985abe4c182ce04a1f2f5bf0260278d",
+  "template_digest": "sha256:b507b9c2f6ca642bffcd06665ea7c91f235fd32daeefdf875a0f938db05fb315",
+  "params_digest": "sha256:9371364b27a52acac9d87f88bd93c9db1174d8d6ec57f6888925cdc1788871ff",
+  "sha_match": true,
+  "renderer": "qwen3.5",
+  "parser": "qwen3.5",
+  "config_digest": "sha256:08f9698c1116d2ba3d2c1751f6e98919823e13bb28ff5eb7451c7bc9b40907c5",
+  "go_literals_not_in_ref": []
+ },
+ "qwen3.6-27b": {
+  "name": "qwen3.6:27b",
+  "gguf_sha256": [
+   "415aad607fc297a2ad84cda238febbde295f49f17c17ad7784e2246060fb06d0"
+  ],
+  "model_layer": "sha256:415aad607fc297a2ad84cda238febbde295f49f17c17ad7784e2246060fb06d0",
+  "params_digest": "sha256:3f3289008cd00add7198019000e37526b44b1fb3f2bd340b0d411a25fb17838c",
+  "sha_match": true,
+  "renderer": "qwen3.5",
+  "parser": "qwen3.5",
+  "config_digest": "sha256:370b24c023f51e75e7f3b70e1b89d59a38ec2fb5af3289fcf92ff78b3fadd619",
+  "go_literals_not_in_ref": []
+ },
+ "qwen3.8-27b": {
+  "name": "qwen3.8:27b",
+  "gguf_sha256": [
+   "f5f1dd8920d417aac2718b0bda3403da274301efdd6760b4f0f4b864ff2ad57d"
+  ],
+  "model_layer": "sha256:f5f1dd8920d417aac2718b0bda3403da274301efdd6760b4f0f4b864ff2ad57d",
+  "params_digest": "sha256:906ee87bde6cff7bf3c3b1550f55cbbec261e027187fbb9f511f908ffc418334",
+  "sha_match": true,
+  "renderer": "qwen3.8",
+  "parser": "qwen3.5",
+  "config_digest": "sha256:492b2922d38e553cabc2d319345644ed482874fbf5e5c9e4495cbf8e17b0cf5f",
+  "go_literals_not_in_ref": []
+ },
+ "qwen3-14b": {
+  "name": "qwen3:14b",
+  "gguf_sha256": [
+   "a8cc1361f3145dc01f6d77c6c82c9116b9ffe3c97b34716fe20418455876c40e"
+  ],
+  "model_layer": "sha256:a8cc1361f3145dc01f6d77c6c82c9116b9ffe3c97b34716fe20418455876c40e",
+  "template_digest": "sha256:ae370d884f108d16e7cc8fd5259ebc5773a0afa6e078b11f4ed7e39a27e0dfc4",
+  "params_digest": "sha256:cff3f395ef3756ab63e58b0ad1b32bb6f802905cae1472e6a12034e4246fbbdb",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:78b3b822087d5199783c8203553a5a92ce5eb7b683a5a81003f8efea9b399d74",
+  "go_literals_not_in_ref": [
+   "{\"type\": \"function\", \"function\":",
+   "<|im_start|>user\n<tool_response>",
+   "</tool_response><|im_end|>"
+  ]
+ },
+ "qwen3-30b-a3b": {
+  "name": "qwen3:30b-a3b",
+  "gguf_sha256": [
+   "58574f2e94b99fb9e4391408b57e5aeaaaec10f6384e9a699fc2cb43a5c8eabf"
+  ],
+  "model_layer": "sha256:58574f2e94b99fb9e4391408b57e5aeaaaec10f6384e9a699fc2cb43a5c8eabf",
+  "template_digest": "sha256:2d54db2b9bb29ce7db54fea63a891f5859603813c555b1f88b5e0994652897f9",
+  "params_digest": "sha256:cff3f395ef3756ab63e58b0ad1b32bb6f802905cae1472e6a12034e4246fbbdb",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:3cdc64c2b371af88ae18b4cdac63d1097f76a8f6fd23d785aaaaa02c59450d61",
+  "go_literals_not_in_ref": [
+   "{\"type\": \"function\", \"function\":",
+   "<|im_start|>user\n<tool_response>",
+   "</tool_response><|im_end|>"
+  ]
+ },
+ "qwen3-4b": {
+  "name": "qwen3:4b",
+  "gguf_sha256": [
+   "3e4cb14174460404e7a233e531675303b2fbf7749c02f91864fe311ab6344e4f"
+  ],
+  "model_layer": "sha256:3e4cb14174460404e7a233e531675303b2fbf7749c02f91864fe311ab6344e4f",
+  "template_digest": "sha256:2d54db2b9bb29ce7db54fea63a891f5859603813c555b1f88b5e0994652897f9",
+  "params_digest": "sha256:cff3f395ef3756ab63e58b0ad1b32bb6f802905cae1472e6a12034e4246fbbdb",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:e18a783aae5525fd2852fc94c985541a77e791e034abc2d3056474d59de336fc",
+  "go_literals_not_in_ref": [
+   "{\"type\": \"function\", \"function\":",
+   "<|im_start|>user\n<tool_response>",
+   "</tool_response><|im_end|>"
+  ]
+ },
+ "qwen3-8b": {
+  "name": "qwen3:8b",
+  "gguf_sha256": [
+   "a3de86cd1c132c822487ededd47a324c50491393e6565cd14bafa40d0b8e686f",
+   "a3de86cd1c132c822487ededd47a324c50491393e6565cd14bafa40d0b8e686f"
+  ],
+  "model_layer": "sha256:a3de86cd1c132c822487ededd47a324c50491393e6565cd14bafa40d0b8e686f",
+  "template_digest": "sha256:ae370d884f108d16e7cc8fd5259ebc5773a0afa6e078b11f4ed7e39a27e0dfc4",
+  "params_digest": "sha256:cff3f395ef3756ab63e58b0ad1b32bb6f802905cae1472e6a12034e4246fbbdb",
+  "sha_match": true,
+  "renderer": null,
+  "parser": null,
+  "config_digest": "sha256:05a61d37b08453e59290add468e3bb2f688e23a01e967fecb0e2fa41218cea76",
+  "go_literals_not_in_ref": [
+   "{\"type\": \"function\", \"function\":",
+   "<|im_start|>user\n<tool_response>",
+   "</tool_response><|im_end|>"
+  ]
+ }
+}

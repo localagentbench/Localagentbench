@@ -1,0 +1,1 @@
+{"model": "hermes3:8b", "tokens_per_sec_decode": 19.9, "runs": [19.9, 19.8, 19.9], "hardware": "mac-m2"}

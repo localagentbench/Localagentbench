@@ -1,0 +1,53 @@
+{
+  "run_id": "20261020-llama3.2-3b-4559ab",
+  "date": "2026-10-20T19:47:27+00:00",
+  "model": {
+    "name": "llama3.2:3b",
+    "family": "llama3.2",
+    "params_b": 3.0,
+    "quant": "Q4_K_M",
+    "gguf_sha256": "dde5aa3fc5ffc17176b5e8bdc82f587b24b2678c6c66101bf7da77af9f7ccdff"
+  },
+  "engine": {
+    "name": "ollama",
+    "version": "0.40.6"
+  },
+  "agent": {
+    "name": "hermes-agent",
+    "version": "Hermes Agent v0.22.2+2363.g9cb34e9 (2026.9.24) \u00b7 stable \u00b7 local 9cb34e9e285d"
+  },
+  "hardware": {
+    "tier_gb": 8,
+    "cpu": "AMD EPYC 7663 56-Core Processor (112 threads)",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "vram_gb": 24.0,
+    "ram_gb": 251.5,
+    "os": "Linux 6.8.0-57-generic"
+  },
+  "settings": {
+    "temp": 0.0,
+    "ctx": 8192,
+    "seed": 42
+  },
+  "suite_version": "0.1",
+  "metrics": {
+    "json_valid_pct": 90.67,
+    "schema_ok_pct": 45.33,
+    "tool_correct_pct": 93.33,
+    "multistep_success_pct": 18.1,
+    "injection_resist_pct": 88.89,
+    "sec_per_task_p50": 11.908,
+    "sec_per_task_p95": 13.731,
+    "tokens_per_sec": null
+  },
+  "score_total": 62.27,
+  "n_trials": 3,
+  "verified": false,
+  "sponsor_disclosure": "none",
+  "log_url": "results/gpu/20261020-llama3.2-3b-4559ab.log.jsonl",
+  "x_channel": "community",
+  "x_harness": "hermes",
+  "x_tasks_run": 100,
+  "x_subset": false,
+  "x_recovery_success_pct": 60.0
+}

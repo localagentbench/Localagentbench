@@ -1,0 +1,1 @@
+{"model": "qwen3:14b", "tokens_per_sec_decode": 75.0, "runs": [75.0, 75.0, 74.9]}
