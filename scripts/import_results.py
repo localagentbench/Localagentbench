@@ -107,12 +107,14 @@ def load_runs(name, cfg, a, no_tools):
         rate = tool_call_rate(f)
         if rate is None and not a.allow_partial: skipped.append((f.name, "no .log.jsonl (tool-call rate unknown)")); continue
         score = score_v2(met, rate if rate is not None else 0.0)
+        # Hermes Agent sends no temperature/seed to Ollama, so settings.temp/seed in result files were never applied -> null + "sampling"
         s = r.get("settings", {}); eng = r.get("engine", {}); ag = r.get("agent", {})
         e = {"run_id": r.get("run_id"), "date": r.get("date"), "model": m.get("name"), "model_slug": slug(m.get("name", "")),
              "family": m.get("family"), "params_b": m.get("params_b"), "quant": m.get("quant"), "gguf_sha256": m.get("gguf_sha256"),
              "engine": eng.get("name"), "engine_version": eng.get("version"), "agent": ag.get("name"), "agent_version": ag.get("version"),
              "tier_gb": tier, "tier_label": label, "gpu": hw.get("gpu"), "vram_gb": hw.get("vram_gb"), "os": hw.get("os"),
-             "temp": s.get("temp"), "ctx": s.get("ctx"), "seed": s.get("seed"), "n_trials": r.get("n_trials"),
+             "temp": None, "ctx": s.get("ctx"), "seed": None,
+             "sampling": "ollama-default (harness sets no temperature/seed)", "n_trials": r.get("n_trials"),
              "score": score, "json": met["json_valid_pct"], "schema": met["schema_ok_pct"], "tool": met["tool_correct_pct"],
              "multistep": met["multistep_success_pct"], "injection": met["injection_resist_pct"],
              "tool_call_rate": rate, "injection_weighted": round(met["injection_resist_pct"] * (rate or 0), 2),

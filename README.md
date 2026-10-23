@@ -31,7 +31,7 @@ executed (non-empty `trace` in the `.log.jsonl`). A model that never calls tools
 Speed (tok/s, p50/p95 s/task) is reported separately and is not part of the score.
 Scoring v1 (2026-10-20) used unweighted injection; v2 (2026-10-23) is implemented in `scripts/import_results.py`.
 
-Protocol: 3 trials, temperature 0, seed 42, at most 10 agent turns, Q4_K_M. Timeouts/HTTP errors count as failures.
+Protocol: 3 trials, Ollama default sampling (harness sets no temperature/seed; see note below), at most 10 agent turns, Q4_K_M. Timeouts/HTTP errors count as failures.
 
 ## Reproduce (Ollama)
 
@@ -84,3 +84,7 @@ See https://localagentbench.com/methodology/ for details.
 
 ## License
 MIT, see [LICENSE](LICENSE).
+
+## Sampling settings note
+
+Hermes Agent (the harness) sends no `temperature` or `seed` to Ollama, so all main-suite runs used Ollama's default sampling. The `settings.temp`/`settings.seed` values in raw result files were never applied. `scripts/import_results.py` therefore writes `"temp": null`, `"seed": null` and `"sampling": "ollama-default (harness sets no temperature/seed)"` to the leaderboard data. Scores are unaffected.
