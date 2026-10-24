@@ -31,7 +31,7 @@ executed (non-empty `trace` in the `.log.jsonl`). A model that never calls tools
 Speed (tok/s, p50/p95 s/task) is reported separately and is not part of the score.
 Scoring v1 (2026-10-20) used unweighted injection; v2 (2026-10-23) is implemented in `scripts/import_results.py`.
 
-Protocol: 3 trials, Ollama default sampling (harness sets no temperature/seed; see note below), at most 10 agent turns, Q4_K_M. Timeouts/HTTP errors count as failures.
+Protocol: 3 trials, Ollama default sampling (harness sets no temperature/seed; see note below), at most 10 agent turns, Q4_K_M. Context window: 32,768 tokens as loaded by Ollama (`ollama ps` after each run; the `ctx 8192` field in result files is the runner default and the Hermes adapter's `ollama_num_ctx: 65536` was not what Ollama loaded). Per-request prompt sizes were not logged, so truncation of long multi-turn conversations cannot be fully ruled out. Timeouts/HTTP errors count as failures.
 
 ## Reproduce (Ollama)
 
@@ -39,8 +39,7 @@ Requirements: Python 3.10+, [Ollama](https://ollama.com), and for the published 
 [Hermes Agent](https://github.com/NousResearch/hermes-agent) (needs ≥64K context).
 
 ```bash
-git clone https://github.com/<owner>/localagentbench.git
-cd localagentbench/runner
+git clone https://github.com/localagentbench/Localagentbench.git && cd Localagentbench/runner
 pip install -r requirements.txt
 pip install -r requirements-hermes.txt   # MCP server for the Hermes harness
 # Ollama
@@ -61,8 +60,12 @@ Then rebuild the leaderboard data (from the repo root):
 
 ```bash
 cd ..
-python3 scripts/import_results.py      # writes site/src/_data/leaderboard.json
+python3 scripts/import_results.py      # writes ./leaderboard.json (or --out PATH / $LAB_LEADERBOARD_OUT)
 ```
+
+The website (localagentbench.com, built with 11ty) lives in a separate repository and is not part of this repo.
+`import_results.py` only writes `site/src/_data/leaderboard.json` when a `site/` checkout exists next to `scripts/`;
+otherwise it writes `leaderboard.json` in the repo root. Use `--out PATH` or `LAB_LEADERBOARD_OUT=PATH` to choose.
 
 Quick CPU smoke test (not publishable): `cd runner && ./smoke.sh qwen2.5:0.5b 4 1`.
 Docker: `docker build -t lab runner && docker run --rm --network host -v $PWD/results:/app/results lab --model qwen2.5:1.5b`.
@@ -87,4 +90,4 @@ MIT, see [LICENSE](LICENSE).
 
 ## Sampling settings note
 
-Hermes Agent (the harness) sends no `temperature` or `seed` to Ollama, so all main-suite runs used Ollama's default sampling. The `settings.temp`/`settings.seed` values in raw result files were never applied. `scripts/import_results.py` therefore writes `"temp": null`, `"seed": null` and `"sampling": "ollama-default (harness sets no temperature/seed)"` to the leaderboard data. Scores are unaffected.
+Hermes Agent (the harness) sends no `temperature` or `seed` to Ollama, so all main-suite runs used Ollama's default sampling. The `settings.temp`/`settings.seed` values in raw result files were never applied. `scripts/import_results.py` therefore writes `"temp": null`, `"seed": null` and `"sampling": "ollama-default (harness sets no temperature/seed)"` to the leaderboard data. The published numbers are unchanged by this metadata fix, but they were measured with Ollama's default, non-deterministic sampling, so they vary between trials. Scoring each of the 3 trials separately (same formula; per-trial scores average to the published score), the 35 ranked runs (25 GPU, 10 Apple M2) have a median per-model standard deviation of 1.76 points (max 4.79) and a median min–max range of 3.18 points (max 9.07, hermes3:8b on M2: 47.73–56.80). Per-model values are shown on localagentbench.com. A 5-trial variance rerun at explicit temperature 0.7 with fixed seeds is underway. (The GPU tok/s probe is separate and does use temperature 0, seed 42, `num_ctx` 8192.)

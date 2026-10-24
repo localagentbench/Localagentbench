@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Convert runner output into site/src/_data/leaderboard.json.
+"""Convert runner output into leaderboard.json (the site's data file; see --out for the default path).
 
 Usage: python3 scripts/import_results.py [--src gpu --src mac-m2 | --src <dir>] [--merge]
-                                        [--out site/src/_data/leaderboard.json] [--allow-partial]
+                                        [--out PATH | env LAB_LEADERBOARD_OUT] [--allow-partial]
 
 Sources (see SOURCES below; default = all of them, so a plain re-run includes GPU *and* Mac data):
   gpu     results/gpu     -> GPU tiers 8/16/24 GB VRAM, by hardware.tier_gb. Runs tagged with a
@@ -15,7 +15,7 @@ Sources (see SOURCES below; default = all of them, so a plain re-run includes GP
 Dev/CPU runs (x_channel=dev, tier 0, gpu none), subset runs and runs with fewer than 3 trials are skipped
 unless --allow-partial is given (dev never imported). Best run per (model, quant, engine) is kept per tier,
 sorted by score. Overrides in scripts/overrides.json apply to every source."""
-import argparse, json, re, sys
+import argparse, json, os, re, sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -133,7 +133,10 @@ def load_runs(name, cfg, a, no_tools):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--src", action="append", help="source name (%s) or results dir; repeatable; default: all" % ", ".join(SOURCES))
-    ap.add_argument("--out", default=ROOT / "site/src/_data/leaderboard.json", type=Path)
+    # The site (11ty) lives in a separate, private repo. Default output: $LAB_LEADERBOARD_OUT, else
+    # site/src/_data/leaderboard.json if a site/ checkout sits next to scripts/, else ./leaderboard.json in the repo root.
+    default_out = os.environ.get("LAB_LEADERBOARD_OUT") or (ROOT / "site/src/_data/leaderboard.json" if (ROOT / "site").is_dir() else ROOT / "leaderboard.json")
+    ap.add_argument("--out", default=default_out, type=Path, help="output JSON (default: $LAB_LEADERBOARD_OUT, site/src/_data/leaderboard.json if site/ exists, else leaderboard.json)")
     ap.add_argument("--allow-partial", action="store_true")
     ap.add_argument("--merge", action="store_true", help="keep tiers/runs of sources not listed in --src from the existing --out")
     ap.add_argument("--overrides", default=ROOT / "scripts/overrides.json", type=Path)
