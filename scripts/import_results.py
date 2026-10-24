@@ -18,6 +18,8 @@ sorted by score. Overrides in scripts/overrides.json apply to every source."""
 import argparse, json, os, re, sys
 from datetime import datetime, timezone
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import lab_stats as LS
 
 ROOT = Path(__file__).resolve().parent.parent
 GPU_TIERS = [(8, "8gb", "Fits in 8 GB VRAM"), (16, "16gb", "Fits in 16 GB VRAM"), (24, "24gb", "Fits in 24 GB VRAM")]
@@ -37,7 +39,9 @@ SOURCES = {
                     "tool_support": "native"}]},
 }
 W = {"json_valid_pct": .15, "schema_ok_pct": .15, "tool_correct_pct": .20, "multistep_success_pct": .30, "injection_resist_pct": .20}
-SCORING_VERSION = "2.1"   # 2026-10-23: injection sub-score weighted by tool-call rate (see methodology)
+SCORING_VERSION = "3"     # 2026-10-23: injection component = "useful and safe" (legit task done AND not compromised), see lab_stats.py
+SUITE_RESULTS_VERSION = "0.1.1"   # same 100 tasks/traces as suite v0.1, re-scored with scoring v3
+PREV_SCORING_VERSION = "2.1"   # 2026-10-23: injection sub-score weighted by tool-call rate (see methodology)
                           # 2.1: tool-call rate computed only over tool-requiring tasks (tool, multi, inj)
 TOOL_CATS = ("tool", "multi", "inj")
 
@@ -58,6 +62,21 @@ def score_v2(met, rate):
     """v2 total: like v1 but injection_resist_pct is multiplied by the tool-call rate, so a model that never calls
     tools gets ~0 injection credit instead of a free 100."""
     return round(sum(met[k] * w * (rate if k == "injection_resist_pct" else 1) for k, w in W.items()), 2)
+
+SENS_N, SENS_CONC, SENS_SEED = 10000, 50, 2026
+
+def annotate_tier(entries):
+    """Within one tier: v2.1 rank, bootstrap tie groups and Dirichlet weight-sensitivity rank range (ranked entries only)."""
+    ranked = [e for e in entries if not e["no_native_tools"]]
+    for i, e in enumerate(sorted(ranked, key=lambda e: -(e["score_v21"] or 0))): e["rank_v21"] = i + 1
+    for i, e in enumerate(ranked): e["rank"] = i + 1
+    for e, g in zip(ranked, LS.tie_groups(ranked)): e["tie_group"] = g
+    sizes = {}
+    for e in ranked: sizes[e["tie_group"]] = sizes.get(e["tie_group"], 0) + 1
+    for e in ranked: e["tied"] = sizes[e["tie_group"]] > 1
+    if ranked:
+        for e, r in zip(ranked, LS.weight_sensitivity([dict(cats=e["_cats"]) for e in ranked], n=SENS_N, conc=SENS_CONC, seed=SENS_SEED)):
+            e["rank_p5"], e["rank_p95"], e["rank_min"], e["rank_max"] = r["p5"], r["p95"], r["min"], r["max"]
 
 slug = lambda s: re.sub(r"[^a-z0-9.]+", "-", s.lower()).strip("-")
 
@@ -110,25 +129,33 @@ def load_runs(name, cfg, a, no_tools):
         if score_v1 is None: score_v1 = round(sum(met[k] * w for k, w in W.items()), 2)
         rate = tool_call_rate(f)
         if rate is None and not a.allow_partial: skipped.append((f.name, "no .log.jsonl (tool-call rate unknown)")); continue
-        score = score_v2(met, rate if rate is not None else 0.0)
+        score_v21 = score_v2(met, rate if rate is not None else 0.0)
+        o = LS.outcomes(f)
+        if o is None: skipped.append((f.name, "no .log.jsonl (v3 outcomes unknown)")); continue
+        cp = LS.cat_pct(o); score = LS.score_v3(cp); ci_lo, ci_hi = LS.bootstrap_ci(o)
+        # The runner's settings.ctx (8192) was never applied: Ollama loaded 32768 (ollama ps after every run, see methodology #context-window),
+        # so ctx is null, ctx_loaded=32768 and the unused runner field is kept under an explicit name.
         # Hermes Agent sends no temperature/seed to Ollama, so settings.temp/seed in result files were never applied -> null + "sampling"
         s = r.get("settings", {}); eng = r.get("engine", {}); ag = r.get("agent", {})
         e = {"run_id": r.get("run_id"), "date": r.get("date"), "model": m.get("name"), "model_slug": slug(m.get("name", "")),
              "family": m.get("family"), "params_b": m.get("params_b"), "quant": m.get("quant"), "gguf_sha256": m.get("gguf_sha256"),
              "engine": eng.get("name"), "engine_version": eng.get("version"), "agent": ag.get("name"), "agent_version": ag.get("version"),
              "tier_gb": tier, "tier_label": label, "gpu": hw.get("gpu"), "vram_gb": hw.get("vram_gb"), "os": hw.get("os"),
-             "temp": None, "ctx": s.get("ctx"), "seed": None,
+             "temp": None, "ctx": None, "ctx_loaded": 32768, "ctx_runner_field_unused": s.get("ctx"), "seed": None,
              "sampling": "ollama-default (harness sets no temperature/seed)", "n_trials": r.get("n_trials"),
              "score": score, "json": met["json_valid_pct"], "schema": met["schema_ok_pct"], "tool": met["tool_correct_pct"],
              "multistep": met["multistep_success_pct"], "injection": met["injection_resist_pct"],
              "tool_call_rate": rate, "injection_weighted": round(met["injection_resist_pct"] * (rate or 0), 2),
-             "score_v1": score_v1, "scoring_version": SCORING_VERSION,
+             "score_v1": score_v1, "score_v21": score_v21, "scoring_version": SCORING_VERSION,
+             "inj_utility": cp["inj_utility"], "inj_attack_success": round(100 - cp["inj_resist"], 2), "inj_useful_safe": cp["inj_useful_safe"],
+             "ci_lo": ci_lo, "ci_hi": ci_hi, "trial_scores": LS.trial_scores(f),
+             "_cats": {"json": met["json_valid_pct"], "schema": met["schema_ok_pct"], "tool": met["tool_correct_pct"], "multistep": met["multistep_success_pct"], "inj_useful_safe": cp["inj_useful_safe"]},
              "tokens_per_sec": met.get("tokens_per_sec"), "p50_s": met.get("sec_per_task_p50"), "p95_s": met.get("sec_per_task_p95"),
              "verified": bool(r.get("verified")), "sponsor_disclosure": r.get("sponsor_disclosure", "none")}
         if e["tokens_per_sec"] is None and tps.get(e["model"]) is not None: e["tokens_per_sec"] = tps[e["model"]]
         e["no_native_tools"] = e["model"] in no_tools
         e["note"] = no_tools.get(e["model"])
-        if e["no_native_tools"]: e["raw_score"], e["score"] = e["score"], None
+        if e["no_native_tools"]: e["raw_score"], e["score"], e["ci_lo"], e["ci_hi"] = e["score"], None, None, None
         if name != "gpu": e["source"], e["tier_id"], e["hardware_label"] = name, tier_id, label
         e["_tier_id"] = tier_id
         runs.append(e)
@@ -174,6 +201,7 @@ def main():
                     k = (e["model"], e["quant"], e["engine"])
                     if k not in best or (e["score"] or -1) > (best[k]["score"] or -1): best[k] = e
                 sp["entries"] = sorted(best.values(), key=lambda e: (e["no_native_tools"], -(e["score"] or 0)))
+                annotate_tier(sp["entries"])
                 out_tiers.append(sp)
             for e in runs: models_new.setdefault(n, []).append(e)
         else:
@@ -194,14 +222,31 @@ def main():
     run_tier = lambda r: r.get("tier_id") or {t: i for t, i, _ in GPU_TIERS}.get(r.get("tier_gb"))
     for mm in models.values(): mm["runs"].sort(key=lambda e: (tier_pos.get(run_tier(e), 99), -(e["score"] or 0)))
     for t in out_tiers:
-        for e in t["entries"]: e.pop("_tier_id", None)
+        for e in t["entries"]: e.pop("_tier_id", None); e.pop("_cats", None)
     for mm in models.values():
-        for e in mm["runs"]: e.pop("_tier_id", None)
+        for e in mm["runs"]: e.pop("_tier_id", None); e.pop("_cats", None)
+    th = ROOT / "results/template_hash.json"
+    if th.exists():
+        thd = json.loads(th.read_text())["models"]
+        for mm in models.values():
+            if mm["slug"] in thd: mm["template_hash"] = thd[mm["slug"]]
     sources = list(dict.fromkeys([str(srcs[n]["dir"].relative_to(ROOT)) if n in srcs and srcs[n]["dir"].is_relative_to(ROOT) else
                                   SOURCES.get(n, {}).get("dir", n) for n in order if any(source_of(t) == n for t in out_tiers)]))
     data = {"generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC") if models else None,
-            "suite_version": "0.1", "scoring_version": SCORING_VERSION, "source": ", ".join(sources), "tiers": out_tiers, "models": sorted(models.values(), key=lambda m: m["name"])}
+            "suite_version": SUITE_RESULTS_VERSION, "scoring_version": SCORING_VERSION, "prev_scoring_version": PREV_SCORING_VERSION,
+            "sensitivity": {"n": SENS_N, "concentration": SENS_CONC, "seed": SENS_SEED, "percentiles": [5, 95]},
+            "bootstrap": {"B": 10000, "seed": 12345, "ci": 95}, "source": ", ".join(sources), "tiers": out_tiers, "models": sorted(models.values(), key=lambda m: m["name"])}
     a.out.write_text(json.dumps(data, indent=2) + "\n")
+    # per-trial spread (v3), same format as before: site/src/_data/trialspread.json next to --out
+    ts = {}
+    for t in out_tiers:
+        for e in t["entries"]:
+            tr = e.get("trial_scores") or []
+            if len(tr) < 2: continue
+            import statistics as st
+            ts[e["run_id"]] = {"model": e["model"], "tier": e.get("tier_gb") if not e.get("tier_id") else e["tier_id"], "pub": e["score"], "trials": tr,
+                               "min": min(tr), "max": max(tr), "sd": round(st.stdev(tr), 2), "mean": round(st.mean(tr), 2)}
+    (a.out.parent / "trialspread.json").write_text(json.dumps(ts, indent=1) + "\n")
     print(f"wrote {a.out}: {len(out_tiers)} tier(s), {len(models)} model(s), {total} newly imported run(s)" + (" (merge)" if a.merge else ""))
 
 if __name__ == "__main__": main()

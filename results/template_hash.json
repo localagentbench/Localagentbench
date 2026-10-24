@@ -1,0 +1,306 @@
+{
+  "method": "sha256 of whitespace-normalised template (re.sub(r'\\s+',' ').strip()); GGUF tokenizer.chat_template vs upstream HF chat template",
+  "source": "results/template_integrity_2026-10-23_raw",
+  "labels": [
+    "matches",
+    "differs",
+    "no reference"
+  ],
+  "models": {
+    "deepseek-r1-14b": {
+      "model": "deepseek-r1:14b",
+      "gguf_template_sha256": "b6835114b7303ddd78919a82e4d9f7d8c26ed0d7dfc36beeb12d524f6144eab1",
+      "reference_sha256": "56a1447ad31926fdc21fb07e56e5642bd9c850c4f52d8c8af7bbe5f079a84f5f",
+      "reference_source": "https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B/resolve/main/tokenizer_config.json",
+      "ollama_template_layer": "sha256:c5ad996bda6eed4df6e3b605a9869647624851ac248209d22fd5e2c0cc1121d3",
+      "ollama_renderer": null,
+      "label": "differs",
+      "detail": "GGUF template differs from the current upstream reference (can be an older revision or a legitimate fix)"
+    },
+    "deepseek-r1-8b": {
+      "model": "deepseek-r1:8b",
+      "gguf_template_sha256": "cf9e5f0ebfacd46794d7f114c9bf96c310f9bdd8f2c96d6232b7daa683ebb88c",
+      "reference_sha256": "cf9e5f0ebfacd46794d7f114c9bf96c310f9bdd8f2c96d6232b7daa683ebb88c",
+      "reference_source": "https://huggingface.co/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B/resolve/main/tokenizer_config.json",
+      "ollama_template_layer": "sha256:c5ad996bda6eed4df6e3b605a9869647624851ac248209d22fd5e2c0cc1121d3",
+      "ollama_renderer": null,
+      "label": "matches",
+      "detail": "GGUF template equals the upstream reference after whitespace normalisation"
+    },
+    "gemma3-4b": {
+      "model": "gemma3:4b",
+      "gguf_template_sha256": "1c1193119e155227f9a1cd934cac8895ab0a1b8a49fca8bbb480aa424a2e74eb",
+      "reference_sha256": null,
+      "reference_source": null,
+      "ollama_template_layer": "sha256:e0a42594d802e5d31cdc786deb4823edb8adff66094d49de8fffe976d753e348",
+      "ollama_renderer": null,
+      "label": "no reference",
+      "detail": "no upstream Jinja reference available (gated repo or provider publishes no Jinja template)"
+    },
+    "gemma4-12b": {
+      "model": "gemma4:12b",
+      "gguf_template_sha256": "ac8703caf03928968acdcb598d83a5f1027c366588e60554d07d0c4490b1174a",
+      "reference_sha256": "ac8703caf03928968acdcb598d83a5f1027c366588e60554d07d0c4490b1174a",
+      "reference_source": "https://huggingface.co/google/gemma-4-12b-it/resolve/main/chat_template.jinja",
+      "ollama_template_layer": "sha256:b507b9c2f6ca642bffcd06665ea7c91f235fd32daeefdf875a0f938db05fb315",
+      "ollama_renderer": "gemma4",
+      "label": "matches",
+      "detail": "GGUF template equals the upstream reference after whitespace normalisation; Ollama renders this model with its built-in Go renderer 'gemma4', not the GGUF Jinja"
+    },
+    "gemma4-26b": {
+      "model": "gemma4:26b",
+      "gguf_template_sha256": "ac8703caf03928968acdcb598d83a5f1027c366588e60554d07d0c4490b1174a",
+      "reference_sha256": "ac8703caf03928968acdcb598d83a5f1027c366588e60554d07d0c4490b1174a",
+      "reference_source": "https://huggingface.co/google/gemma-4-26b-a4b-it/resolve/main/chat_template.jinja",
+      "ollama_template_layer": "sha256:b507b9c2f6ca642bffcd06665ea7c91f235fd32daeefdf875a0f938db05fb315",
+      "ollama_renderer": "gemma4",
+      "label": "matches",
+      "detail": "GGUF template equals the upstream reference after whitespace normalisation; Ollama renders this model with its built-in Go renderer 'gemma4', not the GGUF Jinja"
+    },
+    "gemma4-e4b": {
+      "model": "gemma4:e4b",
+      "gguf_template_sha256": "1826ab2f604bd3435071fe9898a49b898fafc299d12f8a274bd3b948af91c847",
+      "reference_sha256": "1826ab2f604bd3435071fe9898a49b898fafc299d12f8a274bd3b948af91c847",
+      "reference_source": "https://huggingface.co/google/gemma-4-e4b-it/resolve/main/chat_template.jinja",
+      "ollama_template_layer": "sha256:b507b9c2f6ca642bffcd06665ea7c91f235fd32daeefdf875a0f938db05fb315",
+      "ollama_renderer": "gemma4",
+      "label": "matches",
+      "detail": "GGUF template equals the upstream reference after whitespace normalisation; Ollama renders this model with its built-in Go renderer 'gemma4', not the GGUF Jinja"
+    },
+    "gpt-oss-20b": {
+      "model": "gpt-oss:20b",
+      "gguf_template_sha256": null,
+      "reference_sha256": "0ae92c8bd737a4eeb5cc2c162f5c82ae90ef3d6f3e8324dd9325f76e5d92bbeb",
+      "reference_source": "https://huggingface.co/openai/gpt-oss-20b/resolve/main/chat_template.jinja",
+      "ollama_template_layer": "sha256:fa6710a93d78da62641e192361344be7a8c0a1c3737f139cf89f20ce1626b99c",
+      "ollama_renderer": null,
+      "label": "no reference",
+      "detail": "GGUF has no Jinja chat template (prompt built by Ollama's Go template), so there is nothing to hash-compare"
+    },
+    "hermes3-8b": {
+      "model": "hermes3:8b",
+      "gguf_template_sha256": "5de3da42fc6a0d646cab1f820a346be0cc9a11947884a5b7baa12abe824104dc",
+      "reference_sha256": "5de3da42fc6a0d646cab1f820a346be0cc9a11947884a5b7baa12abe824104dc",
+      "reference_source": "https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B/resolve/main/tokenizer_config.json",
+      "ollama_template_layer": "sha256:c7ec478a7939bd2449e43dde848f31c31bc68b75990d4085ced5ac30f299b24a",
+      "ollama_renderer": null,
+      "label": "matches",
+      "detail": "GGUF template equals the upstream reference after whitespace normalisation"
+    },
+    "llama3.1-8b": {
+      "model": "llama3.1:8b",
+      "gguf_template_sha256": "ea1f9d8a898a0ce5c37d64d87ec10cfde63b10355b6c315d60fbd1c7068d429d",
+      "reference_sha256": null,
+      "reference_source": null,
+      "ollama_template_layer": "sha256:948af2743fc78a328dcb3b0f5a31b3d75f415840fdb699e8b1235978392ecf85",
+      "ollama_renderer": null,
+      "label": "no reference",
+      "detail": "no upstream Jinja reference available (gated repo or provider publishes no Jinja template)"
+    },
+    "llama3.2-3b": {
+      "model": "llama3.2:3b",
+      "gguf_template_sha256": "6a181be8efdd87eac842323932a095e853dd3fa234718ebb0371cd4f05be1c01",
+      "reference_sha256": null,
+      "reference_source": null,
+      "ollama_template_layer": "sha256:966de95ca8a62200913e3f8bfbf84c8494536f1b94b49166851e76644e966396",
+      "ollama_renderer": null,
+      "label": "no reference",
+      "detail": "no upstream Jinja reference available (gated repo or provider publishes no Jinja template)"
+    },
+    "mistral-7b": {
+      "model": "mistral:7b",
+      "gguf_template_sha256": "26a59556925c987317ce5291811ba3b7f32ec4c647c400c6cc7e3a9993007ba7",
+      "reference_sha256": "603a4c4659c7bb1d0a2d666e5d4560b4b533dbbf6a3eb1d041509652cf7890f1",
+      "reference_source": "https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3/resolve/main/tokenizer_config.json",
+      "ollama_template_layer": "sha256:1ff5b64b61b9a63146475a24f70d3ca2fd6fdeec44247987163479968896fc0b",
+      "ollama_renderer": null,
+      "label": "differs",
+      "detail": "GGUF template differs from the current upstream reference (can be an older revision or a legitimate fix)"
+    },
+    "mistral-nemo-12b": {
+      "model": "mistral-nemo:12b",
+      "gguf_template_sha256": "606c9352e306ae1eb6c3391c2567a52fb98c3baea323357b7d47ce24452cd66d",
+      "reference_sha256": "edc2b71010347aa2e154cc8c178ab71ac865044e480d17e01f0b68d4da5215bd",
+      "reference_source": "https://huggingface.co/mistralai/Mistral-Nemo-Instruct-2407/resolve/main/tokenizer_config.json",
+      "ollama_template_layer": "sha256:438402ddac7513a63010a594fbd69a11d74b7843ee686e9dc4589c01241c075a",
+      "ollama_renderer": null,
+      "label": "differs",
+      "detail": "GGUF template differs from the current upstream reference (can be an older revision or a legitimate fix)"
+    },
+    "mistral-small-24b": {
+      "model": "mistral-small:24b",
+      "gguf_template_sha256": "d99c0a28fd4eebd7ba2cc0309651f6d7c5486024989bc42f6bb4cc558d553689",
+      "reference_sha256": "ecd93697f657ddff6f34148fa495cdfb76cf1a81398722d22c5b5674c43d9dea",
+      "reference_source": "https://huggingface.co/mistralai/Mistral-Small-24B-Instruct-2501/resolve/main/tokenizer_config.json",
+      "ollama_template_layer": "sha256:6db27cd4e277c91264572b9c899c1980daa8dea11e902f0070a6f4763f3d13c8",
+      "ollama_renderer": null,
+      "label": "differs",
+      "detail": "GGUF template differs from the current upstream reference (can be an older revision or a legitimate fix)"
+    },
+    "mistral-small3.2-24b": {
+      "model": "mistral-small3.2:24b",
+      "gguf_template_sha256": null,
+      "reference_sha256": null,
+      "reference_source": null,
+      "ollama_template_layer": "sha256:706c4d1164f7f1bbce2a852f2bc9cfa66b98d24f79300b9034388e07fcda98c8",
+      "ollama_renderer": null,
+      "label": "no reference",
+      "detail": "GGUF has no Jinja chat template (prompt built by Ollama's Go template), so there is nothing to hash-compare"
+    },
+    "phi4-14b": {
+      "model": "phi4:14b",
+      "gguf_template_sha256": "a41fb8727c4f1e722e53cb1ea935038a1177b8bdf09387f3b048f9da5255ef3e",
+      "reference_sha256": "fe4120415a3858b873955c92ce3a103a95bc97c2cb00b72e62659aaf0f891ee5",
+      "reference_source": "https://huggingface.co/microsoft/phi-4/resolve/main/tokenizer_config.json",
+      "ollama_template_layer": "sha256:32695b892af87ef8fca6e13a1a31c67c1441d7398be037e366e2fc763857c06a",
+      "ollama_renderer": null,
+      "label": "differs",
+      "detail": "GGUF template differs from the current upstream reference (can be an older revision or a legitimate fix)"
+    },
+    "qwen2.5-14b": {
+      "model": "qwen2.5:14b",
+      "gguf_template_sha256": "4decfd53f02771e5790c014338af259a87c446aa7470b71a021173e4d9e4a42e",
+      "reference_sha256": "705d5782da398f5ce4bb10e19b2358aba0bd78710233d5f1811d7068cba1b58a",
+      "reference_source": "https://huggingface.co/Qwen/Qwen2.5-14B-Instruct/resolve/main/tokenizer_config.json",
+      "ollama_template_layer": "sha256:eb4402837c7829a690fa845de4d7f3fd842c2adee476d5341da8a46ea9255175",
+      "ollama_renderer": null,
+      "label": "differs",
+      "detail": "GGUF template differs from the current upstream reference (can be an older revision or a legitimate fix)"
+    },
+    "qwen2.5-7b": {
+      "model": "qwen2.5:7b",
+      "gguf_template_sha256": "4decfd53f02771e5790c014338af259a87c446aa7470b71a021173e4d9e4a42e",
+      "reference_sha256": "705d5782da398f5ce4bb10e19b2358aba0bd78710233d5f1811d7068cba1b58a",
+      "reference_source": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct/resolve/main/tokenizer_config.json",
+      "ollama_template_layer": "sha256:eb4402837c7829a690fa845de4d7f3fd842c2adee476d5341da8a46ea9255175",
+      "ollama_renderer": null,
+      "label": "differs",
+      "detail": "GGUF template differs from the current upstream reference (can be an older revision or a legitimate fix)"
+    },
+    "qwen2.5-coder-14b": {
+      "model": "qwen2.5-coder:14b",
+      "gguf_template_sha256": "705d5782da398f5ce4bb10e19b2358aba0bd78710233d5f1811d7068cba1b58a",
+      "reference_sha256": "705d5782da398f5ce4bb10e19b2358aba0bd78710233d5f1811d7068cba1b58a",
+      "reference_source": "https://huggingface.co/Qwen/Qwen2.5-Coder-14B-Instruct/resolve/main/tokenizer_config.json",
+      "ollama_template_layer": "sha256:1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320",
+      "ollama_renderer": null,
+      "label": "matches",
+      "detail": "GGUF template equals the upstream reference after whitespace normalisation"
+    },
+    "qwen2.5-coder-7b": {
+      "model": "qwen2.5-coder:7b",
+      "gguf_template_sha256": "705d5782da398f5ce4bb10e19b2358aba0bd78710233d5f1811d7068cba1b58a",
+      "reference_sha256": "705d5782da398f5ce4bb10e19b2358aba0bd78710233d5f1811d7068cba1b58a",
+      "reference_source": "https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct/resolve/main/tokenizer_config.json",
+      "ollama_template_layer": "sha256:1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320",
+      "ollama_renderer": null,
+      "label": "matches",
+      "detail": "GGUF template equals the upstream reference after whitespace normalisation"
+    },
+    "qwen3-14b": {
+      "model": "qwen3:14b",
+      "gguf_template_sha256": "ccd61ecea6aa8406e336da83f2f71e500777096cdb0391303614e7331e6087b0",
+      "reference_sha256": "5922e70169a13b0ee856ed984180068cf3b8369fee76cce63c8ca2d37007f0b4",
+      "reference_source": "https://huggingface.co/Qwen/Qwen3-14B/resolve/main/tokenizer_config.json",
+      "ollama_template_layer": "sha256:ae370d884f108d16e7cc8fd5259ebc5773a0afa6e078b11f4ed7e39a27e0dfc4",
+      "ollama_renderer": null,
+      "label": "differs",
+      "detail": "GGUF template differs from the current upstream reference (can be an older revision or a legitimate fix)"
+    },
+    "qwen3-30b-a3b": {
+      "model": "qwen3:30b-a3b",
+      "gguf_template_sha256": "240f81df50a712a8cf059ff79ab620967e0aa21e861e8ae799afa63a9b2ee62f",
+      "reference_sha256": "240f81df50a712a8cf059ff79ab620967e0aa21e861e8ae799afa63a9b2ee62f",
+      "reference_source": "https://huggingface.co/Qwen/Qwen3-30B-A3B-Thinking-2507/resolve/main/tokenizer_config.json",
+      "ollama_template_layer": "sha256:2d54db2b9bb29ce7db54fea63a891f5859603813c555b1f88b5e0994652897f9",
+      "ollama_renderer": null,
+      "label": "matches",
+      "detail": "GGUF template equals the upstream reference after whitespace normalisation"
+    },
+    "qwen3-4b": {
+      "model": "qwen3:4b",
+      "gguf_template_sha256": "240f81df50a712a8cf059ff79ab620967e0aa21e861e8ae799afa63a9b2ee62f",
+      "reference_sha256": "240f81df50a712a8cf059ff79ab620967e0aa21e861e8ae799afa63a9b2ee62f",
+      "reference_source": "https://huggingface.co/Qwen/Qwen3-4B-Thinking-2507/resolve/main/tokenizer_config.json",
+      "ollama_template_layer": "sha256:2d54db2b9bb29ce7db54fea63a891f5859603813c555b1f88b5e0994652897f9",
+      "ollama_renderer": null,
+      "label": "matches",
+      "detail": "GGUF template equals the upstream reference after whitespace normalisation"
+    },
+    "qwen3-8b": {
+      "model": "qwen3:8b",
+      "gguf_template_sha256": "ccd61ecea6aa8406e336da83f2f71e500777096cdb0391303614e7331e6087b0",
+      "reference_sha256": "5922e70169a13b0ee856ed984180068cf3b8369fee76cce63c8ca2d37007f0b4",
+      "reference_source": "https://huggingface.co/Qwen/Qwen3-8B/resolve/main/tokenizer_config.json",
+      "ollama_template_layer": "sha256:ae370d884f108d16e7cc8fd5259ebc5773a0afa6e078b11f4ed7e39a27e0dfc4",
+      "ollama_renderer": null,
+      "label": "differs",
+      "detail": "GGUF template differs from the current upstream reference (can be an older revision or a legitimate fix)"
+    },
+    "qwen3-coder-30b": {
+      "model": "qwen3-coder:30b",
+      "gguf_template_sha256": "7b060bf26a62f0f199f9123ac2af446370bbdcb3727cb5cb06f7e43c3f703491",
+      "reference_sha256": "05ac15900711911509c6a395fc23dde0acea1c1d55313a3a08595862bdb5792c",
+      "reference_source": "https://huggingface.co/Qwen/Qwen3-Coder-30B-A3B-Instruct/resolve/main/chat_template.jinja",
+      "ollama_template_layer": null,
+      "ollama_renderer": "qwen3-coder",
+      "label": "differs",
+      "detail": "GGUF template differs from the current upstream reference (can be an older revision or a legitimate fix); Ollama renders this model with its built-in Go renderer 'qwen3-coder', not the GGUF Jinja"
+    },
+    "qwen3-vl-8b": {
+      "model": "qwen3-vl:8b",
+      "gguf_template_sha256": "9449da7ef700cd6d252423355a41a1a680e6ff94948a92fb5c8a1a7bc3e4e446",
+      "reference_sha256": "9449da7ef700cd6d252423355a41a1a680e6ff94948a92fb5c8a1a7bc3e4e446",
+      "reference_source": "https://huggingface.co/Qwen/Qwen3-VL-8B-Instruct/resolve/main/tokenizer_config.json",
+      "ollama_template_layer": null,
+      "ollama_renderer": "qwen3-vl-thinking",
+      "label": "matches",
+      "detail": "GGUF template equals the upstream reference after whitespace normalisation; Ollama renders this model with its built-in Go renderer 'qwen3-vl-thinking', not the GGUF Jinja"
+    },
+    "qwen3.5-27b": {
+      "model": "qwen3.5:27b",
+      "gguf_template_sha256": "4880dc50493b95f47b108a77ff06e25994d2ce8d5e28359d02975d6eefd4aa79",
+      "reference_sha256": "4880dc50493b95f47b108a77ff06e25994d2ce8d5e28359d02975d6eefd4aa79",
+      "reference_source": "https://huggingface.co/Qwen/Qwen3.5-27B/resolve/main/chat_template.jinja",
+      "ollama_template_layer": "sha256:b507b9c2f6ca642bffcd06665ea7c91f235fd32daeefdf875a0f938db05fb315",
+      "ollama_renderer": "qwen3.5",
+      "label": "matches",
+      "detail": "GGUF template equals the upstream reference after whitespace normalisation; Ollama renders this model with its built-in Go renderer 'qwen3.5', not the GGUF Jinja"
+    },
+    "qwen3.5-9b": {
+      "model": "qwen3.5:9b",
+      "gguf_template_sha256": "4880dc50493b95f47b108a77ff06e25994d2ce8d5e28359d02975d6eefd4aa79",
+      "reference_sha256": "4880dc50493b95f47b108a77ff06e25994d2ce8d5e28359d02975d6eefd4aa79",
+      "reference_source": "https://huggingface.co/Qwen/Qwen3.5-9B/resolve/main/chat_template.jinja",
+      "ollama_template_layer": "sha256:b507b9c2f6ca642bffcd06665ea7c91f235fd32daeefdf875a0f938db05fb315",
+      "ollama_renderer": "qwen3.5",
+      "label": "matches",
+      "detail": "GGUF template equals the upstream reference after whitespace normalisation; Ollama renders this model with its built-in Go renderer 'qwen3.5', not the GGUF Jinja"
+    },
+    "qwen3.6-27b": {
+      "model": "qwen3.6:27b",
+      "gguf_template_sha256": "87b77a87f74cf847a0f50c70321137adbe3fd23d22af40223579ccaeeb3249b8",
+      "reference_sha256": "87b77a87f74cf847a0f50c70321137adbe3fd23d22af40223579ccaeeb3249b8",
+      "reference_source": "https://huggingface.co/Qwen/Qwen3.6-27B/resolve/main/chat_template.jinja",
+      "ollama_template_layer": null,
+      "ollama_renderer": "qwen3.5",
+      "label": "matches",
+      "detail": "GGUF template equals the upstream reference after whitespace normalisation; Ollama renders this model with its built-in Go renderer 'qwen3.5', not the GGUF Jinja"
+    },
+    "qwen3.8-27b": {
+      "model": "qwen3.8:27b",
+      "gguf_template_sha256": "094b7f7d201492fcc2d2410519b0d836957d998bc51bae5007d0be14bd858949",
+      "reference_sha256": "094b7f7d201492fcc2d2410519b0d836957d998bc51bae5007d0be14bd858949",
+      "reference_source": "https://huggingface.co/Qwen/Qwen3.8-27B/resolve/main/chat_template.jinja",
+      "ollama_template_layer": null,
+      "ollama_renderer": "qwen3.8",
+      "label": "matches",
+      "detail": "GGUF template equals the upstream reference after whitespace normalisation; Ollama renders this model with its built-in Go renderer 'qwen3.8', not the GGUF Jinja"
+    }
+  },
+  "counts": {
+    "differs": 10,
+    "matches": 14,
+    "no reference": 5
+  }
+}
