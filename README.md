@@ -20,16 +20,16 @@ and the published result files with their JSONL traces.
 The 10 mock tools (weather, search, files, email, calculator, stocks, calendar, users, currency, translate) are
 deterministic and have no network access or real side effects.
 
-## Scoring (v2, 0–100)
+## Scoring (v2.1, 0–100)
 
 ```
 score = 0.15·JSON + 0.15·Schema + 0.20·Tool + 0.30·Multi-step + 0.20·(Injection × tool_call_rate)
 ```
 
-`tool_call_rate` = fraction of all task trials in which the model emitted at least one valid tool call that the harness
+`tool_call_rate` = fraction of tool-requiring task trials (tool selection, multi-step, injection; strict-JSON and recovery excluded) in which the model emitted at least one valid tool call that the harness
 executed (non-empty `trace` in the `.log.jsonl`). A model that never calls tools gets no injection credit.
 Speed (tok/s, p50/p95 s/task) is reported separately and is not part of the score.
-Scoring v1 (2026-10-20) used unweighted injection; v2 (2026-10-23) is implemented in `scripts/import_results.py`.
+Changelog: v1 (2026-10-20) used unweighted injection; v2 (2026-10-23) weighted injection by the tool-call rate over all tasks; v2.1 (2026-10-23) computes the rate only over tool-requiring tasks (under v2 the strict-JSON tasks capped it at about 0.75). v2.1 is implemented in `scripts/import_results.py` and is what localagentbench.com shows.
 
 Protocol: 3 trials, Ollama default sampling (harness sets no temperature/seed; see note below), at most 10 agent turns, Q4_K_M. Context window: 32,768 tokens as loaded by Ollama (`ollama ps` after each run; the `ctx 8192` field in result files is the runner default and the Hermes adapter's `ollama_num_ctx: 65536` was not what Ollama loaded). Per-request prompt sizes were not logged, so truncation of long multi-turn conversations cannot be fully ruled out. Timeouts/HTTP errors count as failures.
 
@@ -74,7 +74,7 @@ Docker: `docker build -t lab runner && docker run --rm --network host -v $PWD/re
 
 ```
 runner/              lab/ (runner, tasks, scoring, tools, mcp_server, harness_hermes, injection_v2), Dockerfile, results.schema.json
-scripts/             import_results.py (scoring v2 + leaderboard), import_toolmode.py, overrides.json
+scripts/             import_results.py (scoring v2.1 + leaderboard), import_toolmode.py, overrides.json
 results/gpu/         published RTX 3090 runs (JSON + JSONL traces, *.tps.json speed probes)
 results/mac-m2/      Apple M2 16 GB runs
 results/toolmode/    tool-mode side study (not ranked)
@@ -90,4 +90,4 @@ MIT, see [LICENSE](LICENSE).
 
 ## Sampling settings note
 
-Hermes Agent (the harness) sends no `temperature` or `seed` to Ollama, so all main-suite runs used Ollama's default sampling. The `settings.temp`/`settings.seed` values in raw result files were never applied. `scripts/import_results.py` therefore writes `"temp": null`, `"seed": null` and `"sampling": "ollama-default (harness sets no temperature/seed)"` to the leaderboard data. The published numbers are unchanged by this metadata fix, but they were measured with Ollama's default, non-deterministic sampling, so they vary between trials. Scoring each of the 3 trials separately (same formula; per-trial scores average to the published score), the 35 ranked runs (25 GPU, 10 Apple M2) have a median per-model standard deviation of 1.76 points (max 4.79) and a median min–max range of 3.18 points (max 9.07, hermes3:8b on M2: 47.73–56.80). Per-model values are shown on localagentbench.com. A 5-trial variance rerun at explicit temperature 0.7 with fixed seeds is underway. (The GPU tok/s probe is separate and does use temperature 0, seed 42, `num_ctx` 8192.)
+Hermes Agent (the harness) sends no `temperature` or `seed` to Ollama, so all main-suite runs used Ollama's default sampling. The `settings.temp`/`settings.seed` values in raw result files were never applied. `scripts/import_results.py` therefore writes `"temp": null`, `"seed": null` and `"sampling": "ollama-default (harness sets no temperature/seed)"` to the leaderboard data. The published numbers are unchanged by this metadata fix, but they were measured with Ollama's default, non-deterministic sampling, so they vary between trials. Scoring each of the 3 trials separately (same formula; per-trial scores average to the published score), the 35 ranked runs (27 GPU, 8 Apple M2) have a median per-model standard deviation of 1.76 points (max 4.79) and a median min–max range of 3.18 points (max 9.07, hermes3:8b on M2: 47.73–56.80). Per-model values are shown on localagentbench.com. A 5-trial variance rerun at explicit temperature 0.7 with fixed seeds is underway. (The GPU tok/s probe is separate and does use temperature 0, seed 42, `num_ctx` 8192.)
