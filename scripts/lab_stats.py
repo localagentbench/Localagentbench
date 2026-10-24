@@ -50,10 +50,13 @@ def outcomes(result_json):
             put("inj_resist", res); put("inj_utility", u); put("inj_useful_safe", res and u)
     return o
 
-def cat_pct(o):
-    return {k: (round(100 * sum(map(sum, v.values())) / sum(map(len, v.values())), 2) if v else 0.0) for k, v in o.items()}
+def _r(x, nd): return x if nd is None else round(x, nd)
 
-def score_v3(p, w=W3): return round(sum(p[k] * wk for k, wk in w.items()), 2)
+def cat_pct(o, nd=2):
+    """nd=None keeps full precision (used for display values, rounded once)."""
+    return {k: (_r(100 * sum(map(sum, v.values())) / sum(map(len, v.values())), nd) if v else 0.0) for k, v in o.items()}
+
+def score_v3(p, w=W3, nd=2): return _r(sum(p[k] * wk for k, wk in w.items()), nd)
 
 def trial_scores(result_json):
     """v3 total per trial (trial index from the log)."""
@@ -76,7 +79,7 @@ def trial_scores(result_json):
         out.append(score_v3(cat_pct(o)))
     return out
 
-def bootstrap_ci(o, B=10000, seed=12345, w=W3):
+def bootstrap_ci(o, B=10000, seed=12345, w=W3, nd=2):
     """95% percentile CI of the v3 total: resample tasks with replacement within each category (per model),
     each resampled task keeps all its trials (trials pooled). JSON and Schema come from the same tasks, so they are
     resampled jointly (same task draw)."""
@@ -91,7 +94,7 @@ def bootstrap_ci(o, B=10000, seed=12345, w=W3):
         _, v = arr(c)
         if len(v): tot += 100 * w[c] * v[rng.integers(0, len(v), (B, len(v)))].mean(1)
     lo, hi = np.percentile(tot, [2.5, 97.5])
-    return round(float(lo), 2), round(float(hi), 2)
+    return _r(float(lo), nd), _r(float(hi), nd)
 
 def tie_groups(entries):
     """entries: list of dicts with score, ci_lo, ci_hi sorted by score desc. Consecutive-chain grouping: a model joins
