@@ -188,10 +188,10 @@ def load_runs(name, cfg, a, no_tools, ov=None):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--src", action="append", help="source name (%s) or results dir; repeatable; default: all" % ", ".join(SOURCES))
-    # The site (11ty) lives in a separate, private repo. Default output: $LAB_LEADERBOARD_OUT, else
-    # site/src/_data/leaderboard.json if a site/ checkout sits next to scripts/, else ./leaderboard.json in the repo root.
-    default_out = os.environ.get("LAB_LEADERBOARD_OUT") or (ROOT / "site/src/_data/leaderboard.json" if (ROOT / "site").is_dir() else ROOT / "leaderboard.json")
-    ap.add_argument("--out", default=default_out, type=Path, help="output JSON (default: $LAB_LEADERBOARD_OUT, site/src/_data/leaderboard.json if site/ exists, else leaderboard.json)")
+    # Default output: data/leaderboard.json (tracked; see lab_paths.py), or $LAB_LEADERBOARD_OUT / $LAB_DATA_DIR.
+    # The site (11ty, separate private repo) reads the same file through a symlink.
+    import lab_paths
+    ap.add_argument("--out", default=lab_paths.leaderboard(), type=Path, help="output JSON (default: data/leaderboard.json; env $LAB_LEADERBOARD_OUT or $LAB_DATA_DIR)")
     ap.add_argument("--allow-partial", action="store_true")
     ap.add_argument("--merge", action="store_true", help="keep tiers/runs of sources not listed in --src from the existing --out")
     ap.add_argument("--overrides", default=ROOT / "scripts/overrides.json", type=Path)
@@ -272,7 +272,7 @@ def main():
             "sensitivity": {"n": SENS_N, "concentration": SENS_CONC, "seed": SENS_SEED, "percentiles": [5, 95]},
             "bootstrap": {"B": 10000, "seed": 12345, "ci": 95}, "source": ", ".join(sources), "tiers": out_tiers, "models": sorted(models.values(), key=lambda m: m["name"])}
     a.out.write_text(json.dumps(data, indent=2) + "\n")
-    # per-trial spread (v3), same format as before: site/src/_data/trialspread.json next to --out
+    # per-trial spread (v3), same format as before: trialspread.json next to --out (data/trialspread.json)
     ts = {}
     for t in out_tiers:
         for e in t["entries"]:

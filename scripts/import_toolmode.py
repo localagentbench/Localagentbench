@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Tool-mode side study importer. Reads results/toolmode/*.json only and writes site/src/_data/toolmode.json.
+"""Tool-mode side study importer. Reads results/toolmode/*.json, results/toolmode/level2/*.json and the level-2 model list
+results/toolmode/level2/MODELS.txt, plus data/leaderboard.json (tier labels, main-suite scores), and writes data/toolmode.json
+(see lab_paths.py; env $LAB_DATA_DIR).
 Separate from import_results.py: never touches leaderboard.json, no composite score, no rank."""
-import json, glob, os, re
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-lb = json.load(open(os.path.join(ROOT, "site/src/_data/leaderboard.json")))
+import json, glob, os, re, sys
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); sys.path.insert(0, os.path.join(ROOT, "scripts"))
+import lab_paths
+lb = json.load(open(lab_paths.leaderboard()))
 main = {m["name"]: m for m in lb["models"]}
 # Runs that are known-broken by the engine (every constrained request rejected), shown as "no result" with the reason.
 ENGINE_ERRORS = {("gemma3:4b", 3): "llama.cpp rejected every grammar-constrained request for this model's chat template "
@@ -30,7 +33,7 @@ for name, es in rows.items():
     out.append({"name": name, "slug": mm["slug"] if mm else re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-"),
                 "native": nat, "modes": sorted(es, key=lambda e: e["level"])})
 # ---- Level 2: native tool-calling vs emulated (tools in prompt), SAME 60 items, same Ollama, same GGUF (results/toolmode/level2/) ----
-L2_MODELS = [l.strip() for l in open(os.path.join(ROOT, "ops/toolmode/l2/MODELS.txt")) if l.strip()]
+L2_MODELS = [l.strip() for l in open(os.path.join(ROOT, "results/toolmode/level2/MODELS.txt")) if l.strip()]
 def l2_entry(r):
     m, bc = r["metrics"], r.get("by_category", {})
     return {"run_id": r["run_id"], "engine_version": r["engine"]["version"], "n": r["n_items"], "trials": r["settings"]["trials"],
@@ -60,5 +63,5 @@ for name in L2_MODELS:
                    "main_multistep": x.get("multistep") if x else None,
                    "native": d.get("native"), "emulated": d.get("text-only"),
                    "missing": None if ("native" in d and "text-only" in d) else "no result: run did not complete (" + ", ".join(k for k in ("native", "text-only") if k not in d) + " missing)"})
-json.dump({"study": "toolmode", "level2": level2, "models": sorted(out, key=lambda m: m["name"])}, open(os.path.join(ROOT, "site/src/_data/toolmode.json"), "w"), indent=1)
+json.dump({"study": "toolmode", "level2": level2, "models": sorted(out, key=lambda m: m["name"])}, open(lab_paths.data("toolmode.json"), "w"), indent=1)
 print("level2:", [(m["name"], bool(m["native"]), bool(m["emulated"])) for m in level2]); print("toolmode.json:", [(m["name"], [x["mode"] for x in m["modes"]]) for m in out])

@@ -1,0 +1,53 @@
+{
+  "run_id": "20261023-gemma4-26b-ba7292",
+  "date": "2026-10-23T18:20:46+00:00",
+  "model": {
+    "name": "gemma4:26b",
+    "family": "gemma4",
+    "params_b": 26.0,
+    "quant": "Q4_K_M",
+    "gguf_sha256": "a8bdd07a49b895083bb1420bb895ad9ab3e3b8f7d5cc42c7582ca0fa765eede2"
+  },
+  "engine": {
+    "name": "ollama",
+    "version": "0.40.6"
+  },
+  "agent": {
+    "name": "hermes-agent",
+    "version": "Hermes Agent v0.22.2+2363.g9cb34e9 (2026.9.24) \u00b7 stable \u00b7 local 9cb34e9e285d"
+  },
+  "hardware": {
+    "tier_gb": 24,
+    "cpu": "AMD EPYC 7H12 64-Core Processor (256 threads)",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "vram_gb": 24.0,
+    "ram_gb": 1007.6,
+    "os": "Linux 6.8.0-138-generic"
+  },
+  "settings": {
+    "temp": 0.7,
+    "ctx": 8192,
+    "seed": 1003
+  },
+  "suite_version": "0.1",
+  "metrics": {
+    "json_valid_pct": 100.0,
+    "schema_ok_pct": 100.0,
+    "tool_correct_pct": 100.0,
+    "multistep_success_pct": 100.0,
+    "injection_resist_pct": 100.0,
+    "sec_per_task_p50": 19.497,
+    "sec_per_task_p95": 30.006,
+    "tokens_per_sec": null
+  },
+  "score_total": 100.0,
+  "n_trials": 1,
+  "verified": false,
+  "sponsor_disclosure": "none",
+  "log_url": "/root/localagentbench/results/variance/20261023-gemma4-26b-ba7292.log.jsonl",
+  "x_channel": "community",
+  "x_harness": "hermes",
+  "x_tasks_run": 100,
+  "x_subset": false,
+  "x_recovery_success_pct": 100.0
+}

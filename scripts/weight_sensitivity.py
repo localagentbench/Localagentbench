@@ -10,12 +10,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent; sys.path.insert(0, str(ROOT / "scripts"))
 import lab_stats as LS
 ap = argparse.ArgumentParser(); ap.add_argument("--conc", type=float, default=50); ap.add_argument("--n", type=int, default=10000); ap.add_argument("--in", dest="inp"); a = ap.parse_args()
-def _lb_path(p):
-    import os
-    if p: return Path(p)
-    if os.environ.get("LAB_LEADERBOARD_OUT"): return Path(os.environ["LAB_LEADERBOARD_OUT"])
-    s = ROOT / "site/src/_data/leaderboard.json"
-    return s if s.exists() else ROOT / "leaderboard.json"
+import lab_paths
+def _lb_path(p): return Path(p) if p else lab_paths.leaderboard()
 lb = json.loads(_lb_path(a.inp).read_text())
 for t in lb["tiers"]:
     ranked = [e for e in t["entries"] if not e.get("no_native_tools")]

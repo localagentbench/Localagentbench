@@ -39,7 +39,7 @@ Changelog: v1 (2026-10-20) used unweighted injection; v2 (2026-10-23) weighted i
 Hardware tiers (results v0.1.2, 2026-10-26): a model is in a GPU tier when its measured peak VRAM at 32K context (`ollama ps`, Ollama 0.40.6, RTX 3090, KV cache included) is at most the card's VRAM. Scores are unchanged; only tier assignments changed: mistral:7b (8.9 GB), hermes3:8b (9.0 GB), llama3.1:8b (9.2 GB), qwen3:8b (10.0 GB), deepseek-r1:8b (10.0 GB) and qwen3-vl:8b (10 GB) moved from 8 GB to 16 GB. Measurements and moves live in `scripts/overrides.json` (`vram_32k_gb`, `tier_override`); models without a valid measurement (gemma3:4b, phi4:14b, gemma4:e4b, gemma4:12b, gemma4:26b) are `null` ("not measured") and keep their tier. New per-entry fields: `vram_32k_gb`, `prev_tier_gb` (tier in results v0.1.1), `prev_rank` (rank in results v0.1.1, within the previous tier), `tier_moved`; top level: `prev_results_version`, `tier_rule`. After an import, rerun `scripts/bootstrap_ci.py --pool-variance` (pooled tie groups) and `scripts/import_toolmode.py` (tool-mode tier labels, `prev_tier_gb`).
 
 Uncertainty (also written by the importer):
-- `ci_lo`/`ci_hi`: 95% task-bootstrap interval of the v3 total (10,000 resamples, seed 12345, tasks resampled within each category with all their trials; JSON and Schema share a draw). `tie_group`/`tied`: walking down a tier, a model joins the group while its interval overlaps the group leader's. Report: `python3 scripts/bootstrap_ci.py`. `--pool-variance` pools the 5 variance-rerun trials (temperature 0.7, seeds 1001-1005, listed in `site/src/_data/variance.json`) with the 3 main-suite trials of each GPU model and writes the pooled CI and tie groups into `variance.json` (scores and ranking unchanged; the pooled CI need not be centred on the main-suite score, and the site labels it as pooled). Variance trial files that are missing or unreadable are skipped with a warning listing them, and a model left with none falls back to its suite-only CI; `--strict` fails with an error instead.
+- `ci_lo`/`ci_hi`: 95% task-bootstrap interval of the v3 total (10,000 resamples, seed 12345, tasks resampled within each category with all their trials; JSON and Schema share a draw). `tie_group`/`tied`: walking down a tier, a model joins the group while its interval overlaps the group leader's. Report: `python3 scripts/bootstrap_ci.py`. `--pool-variance` pools the 5 variance-rerun trials (temperature 0.7, seeds 1001-1005, listed in `data/variance.json`) with the 3 main-suite trials of each GPU model and writes the pooled CI and tie groups into `data/variance.json` (scores and ranking unchanged; the pooled CI need not be centred on the main-suite score, and the site labels it as pooled). Variance trial files that are missing or unreadable are skipped with a warning listing them, and a model left with none falls back to its suite-only CI; `--strict` fails with an error instead.
 - `rank_p5`/`rank_p95`/`rank_min`/`rank_max`: rank under 10,000 weight vectors drawn from Dirichlet(50 × current weights) (seed 2026, ≈ ±5 points per weight). Report: `python3 scripts/weight_sensitivity.py [--conc 50]`.
 - Chat template hash (`scripts/template_hash.py` → `results/template_hash.json`, used by the importer as `template_hash` per model): SHA-256 of the whitespace-normalised GGUF `tokenizer.chat_template` vs the upstream Hugging Face template. Labels are only `matches`, `differs`, `no reference`; not a safety verdict (legitimate re-uploads such as Unsloth, and Ollama's built-in Go templates/renderers, differ for benign reasons). Current: 14 matches, 10 differs, 5 no reference.
 
@@ -73,12 +73,34 @@ Then rebuild the leaderboard data (from the repo root):
 ```bash
 cd ..
 python3 scripts/template_hash.py       # optional: refresh results/template_hash.json
-python3 scripts/import_results.py      # writes ./leaderboard.json + trialspread.json next to it (or --out PATH / $LAB_LEADERBOARD_OUT)
+python3 scripts/import_results.py      # writes data/leaderboard.json + data/trialspread.json (or --out PATH / $LAB_LEADERBOARD_OUT)
 ```
 
-The website (localagentbench.com, built with 11ty) lives in a separate repository and is not part of this repo.
-`import_results.py` only writes `site/src/_data/leaderboard.json` when a `site/` checkout exists next to `scripts/`;
-otherwise it writes `leaderboard.json` in the repo root. Use `--out PATH` or `LAB_LEADERBOARD_OUT=PATH` to choose.
+### Reproduce the published data from a clean clone
+
+Every input the scripts read is tracked in this repo (raw results under `results/`, `scripts/overrides.json`,
+`results/toolmode/level2/MODELS.txt`), and every derived file the website uses is tracked under `data/`. This
+rebuilds all of `data/` from the raw results with Python 3.10+ and the standard library only (no GPU, about 3 s):
+
+```bash
+git clone https://github.com/localagentbench/Localagentbench.git && cd Localagentbench
+rm -rf data                                    # optional: start from nothing
+python3 scripts/import_results.py              # -> data/leaderboard.json, data/trialspread.json (scores, CIs, tie groups, ranks)
+python3 scripts/variance_stats.py              # -> data/variance.json (27 models x 5 variance trials, results/variance/)
+python3 scripts/bootstrap_ci.py                # report only: main-suite CIs and tie groups (same as leaderboard.json)
+python3 scripts/bootstrap_ci.py --pool-variance --strict   # adds pooled CIs / tie groups ("pooled", "pooled_ties") to data/variance.json
+python3 scripts/import_toolmode.py             # -> data/toolmode.json (tool-mode side study)
+git status --short data/                       # only data/leaderboard.json differs, in its "generated_at" line
+```
+
+The order matters: `variance_stats.py` and `import_toolmode.py` read `data/leaderboard.json`, and `--pool-variance`
+updates the `data/variance.json` written by `variance_stats.py` (running `variance_stats.py` again drops the pooled
+fields until `--pool-variance` is re-run). All bootstraps are seeded, so the output is byte-identical to the
+committed files except the `generated_at` timestamp. `$LAB_DATA_DIR` moves all of `data/` elsewhere (e.g. to compare
+against the committed files); `$LAB_LEADERBOARD_OUT`, `--out`/`--in` and `bootstrap_ci.py --variance` override single files.
+
+The website (localagentbench.com, built with 11ty) lives in a separate repository and is not part of this repo; it reads
+the files in `data/` unchanged.
 
 Quick CPU smoke test (not publishable): `cd runner && ./smoke.sh qwen2.5:0.5b 4 1`.
 Docker: `docker build -t lab runner && docker run --rm --network host -v $PWD/results:/app/results lab --model qwen2.5:1.5b`.
@@ -88,10 +110,13 @@ Docker: `docker build -t lab runner && docker run --rm --network host -v $PWD/re
 ```
 runner/              lab/ (runner, tasks, scoring, tools, mcp_server, harness_hermes, injection_v2), Dockerfile, results.schema.json
 scripts/             import_results.py (scoring v3 + CI/ties/rank ranges + leaderboard), lab_stats.py (shared scoring/statistics),
-                     bootstrap_ci.py, weight_sensitivity.py, template_hash.py, import_toolmode.py, overrides.json
+                     bootstrap_ci.py, variance_stats.py, weight_sensitivity.py, template_hash.py, import_toolmode.py,
+                     lab_paths.py (data/ location), overrides.json
+data/                derived data used by the website: leaderboard.json, trialspread.json, variance.json, toolmode.json
 results/gpu/         published RTX 3090 runs (JSON + JSONL traces, *.tps.json speed probes)
 results/mac-m2/      Apple M2 16 GB runs
-results/toolmode/    tool-mode side study (not ranked)
+results/variance/    variance reruns: 27 GPU models x 5 single-trial runs (temp 0.7, seeds 1001-1005), JSON + JSONL traces
+results/toolmode/    tool-mode side study (not ranked); level2/MODELS.txt = level-2 model list
 results/template_integrity_2026-10-23*  chat-template integrity check (raw templates)
 results/template_hash.json  template hash labels (scripts/template_hash.py)
 ```
