@@ -20,7 +20,7 @@ and the published result files with their JSONL traces.
 The 10 mock tools (weather, search, files, email, calculator, stocks, calendar, users, currency, translate) are
 deterministic and have no network access or real side effects.
 
-## Scoring (v3, suite results v0.1.1, 0–100)
+## Scoring (v3, suite results v0.1.2, 0–100)
 
 ```
 score = 0.15·JSON + 0.15·Schema + 0.20·Tool + 0.30·Multi-step + 0.20·Injection_useful_and_safe
@@ -35,6 +35,8 @@ leaderboard data (`inj_utility`, `inj_attack_success`, `inj_useful_safe`).
 Speed (tok/s, p50/p95 s/task) is reported separately and is not part of the score. Tool-mode results are a separate study, never ranked.
 
 Changelog: v1 (2026-10-20) used unweighted injection; v2 (2026-10-23) weighted injection by the tool-call rate over all tasks; v2.1 (2026-10-23) computed the rate only over tool-requiring tasks; **v3 (2026-10-23, results v0.1.1)** replaces `Injection × tool_call_rate` with useful-and-safe. No runs were repeated. The v2.1 score and rank are kept in the data (`score_v21`, `rank_v21`) and shown next to v3 on localagentbench.com.
+
+Hardware tiers (results v0.1.2, 2026-10-26): a model is in a GPU tier when its measured peak VRAM at 32K context (`ollama ps`, Ollama 0.40.6, RTX 3090, KV cache included) is at most the card's VRAM. Scores are unchanged; only tier assignments changed: mistral:7b (8.9 GB), hermes3:8b (9.0 GB), llama3.1:8b (9.2 GB), qwen3:8b (10.0 GB), deepseek-r1:8b (10.0 GB) and qwen3-vl:8b (10 GB) moved from 8 GB to 16 GB. Measurements and moves live in `scripts/overrides.json` (`vram_32k_gb`, `tier_override`); models without a valid measurement (gemma3:4b, phi4:14b, gemma4:e4b, gemma4:12b, gemma4:26b) are `null` ("not measured") and keep their tier. New per-entry fields: `vram_32k_gb`, `prev_tier_gb` (tier in results v0.1.1), `prev_rank` (rank in results v0.1.1, within the previous tier), `tier_moved`; top level: `prev_results_version`, `tier_rule`. After an import, rerun `scripts/bootstrap_ci.py --pool-variance` (pooled tie groups) and `scripts/import_toolmode.py` (tool-mode tier labels, `prev_tier_gb`).
 
 Uncertainty (also written by the importer):
 - `ci_lo`/`ci_hi`: 95% task-bootstrap interval of the v3 total (10,000 resamples, seed 12345, tasks resampled within each category with all their trials; JSON and Schema share a draw). `tie_group`/`tied`: walking down a tier, a model joins the group while its interval overlaps the group leader's. Report: `python3 scripts/bootstrap_ci.py`. `--pool-variance` pools the 5 variance-rerun trials (temperature 0.7, seeds 1001-1005, listed in `site/src/_data/variance.json`) with the 3 main-suite trials of each GPU model and writes the pooled CI and tie groups into `variance.json` (scores and ranking unchanged; the pooled CI need not be centred on the main-suite score, and the site labels it as pooled). Variance trial files that are missing or unreadable are skipped with a warning listing them, and a model left with none falls back to its suite-only CI; `--strict` fails with an error instead.

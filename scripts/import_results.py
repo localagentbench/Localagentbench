@@ -14,7 +14,10 @@ Sources (see SOURCES below; default = all of them, so a plain re-run includes GP
          without re-reading results/gpu).
 Dev/CPU runs (x_channel=dev, tier 0, gpu none), subset runs and runs with fewer than 3 trials are skipped
 unless --allow-partial is given (dev never imported). Best run per (model, quant, engine) is kept per tier,
-sorted by score. Overrides in scripts/overrides.json apply to every source."""
+sorted by score. Overrides in scripts/overrides.json apply to every source.
+GPU tier rule (results v0.1.2): the measured VRAM at the bench's 32K context, KV cache included (overrides.json
+"vram_32k_gb", from `ollama ps` on the RTX 3090), must be <= the tier's card VRAM. Runs whose raw hardware.tier_gb
+predates this rule are moved by overrides.json "tier_override"; every GPU entry keeps prev_tier_gb/prev_rank (v0.1.1)."""
 import argparse, json, os, re, sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -40,7 +43,8 @@ SOURCES = {
 }
 W = {"json_valid_pct": .15, "schema_ok_pct": .15, "tool_correct_pct": .20, "multistep_success_pct": .30, "injection_resist_pct": .20}
 SCORING_VERSION = "3"     # 2026-10-23: injection component = "useful and safe" (legit task done AND not compromised), see lab_stats.py
-SUITE_RESULTS_VERSION = "0.1.1"   # same 100 tasks/traces as suite v0.1, re-scored with scoring v3
+SUITE_RESULTS_VERSION = "0.1.2"   # same 100 tasks/traces as suite v0.1, scoring v3; 0.1.2 (2026-10-26): GPU tiers by measured VRAM at 32K ctx
+PREV_RESULTS_VERSION = "0.1.1"   # prev_tier_gb / prev_rank refer to this version
 PREV_SCORING_VERSION = "2.1"   # 2026-10-23: injection sub-score weighted by tool-call rate (see methodology)
                           # 2.1: tool-call rate computed only over tool-requiring tasks (tool, multi, inj)
 TOOL_CATS = ("tool", "multi", "inj")
@@ -94,7 +98,9 @@ def resolve_src(s):
         if (ROOT / c["dir"]).resolve() == p: return n, dict(c, dir=p)
     return p.name, {"dir": p, "kind": "gpu"}   # unknown dir: legacy behaviour (GPU tiers)
 
-def load_runs(name, cfg, a, no_tools):
+def load_runs(name, cfg, a, no_tools, ov=None):
+    ov = ov or {}; tov = {k: v for k, v in ov.get("tier_override", {}).items() if not k.startswith("_")}
+    vram = {k: v for k, v in ov.get("vram_32k_gb", {}).items() if not k.startswith("_")}
     if "dev" in Path(cfg["dir"]).resolve().parts: sys.exit("refusing to import dev results")
     allf = sorted(Path(cfg["dir"]).glob("*.json")) if Path(cfg["dir"]).exists() else []
     tps = {}
@@ -112,7 +118,8 @@ def load_runs(name, cfg, a, no_tools):
         try: r = json.loads(f.read_text())
         except Exception as e: skipped.append((f.name, f"bad json: {e}")); continue
         m, hw, met = r.get("model", {}), r.get("hardware", {}), r.get("metrics", {})
-        tier = hw.get("tier_gb")
+        tier = raw_tier = hw.get("tier_gb")
+        if cfg["kind"] == "gpu" and m.get("name") in tov and tov[m["name"]]["from_tier_gb"] == tier: tier = tov[m["name"]]["tier_gb"]
         if cfg["kind"] == "gpu":
             why = ("dev channel" if r.get("x_channel") == "dev" else
                    f"hardware {hw['slug']} belongs to its own source" if hw.get("slug") else
@@ -170,6 +177,10 @@ def load_runs(name, cfg, a, no_tools):
         e["disp"] = {k: (None if v is None else round(v, DISP_ND)) for k, v in full.items()}
         e["disp0"] = {k: (None if v is None else round(v)) for k, v in full.items()}
         if name != "gpu": e["source"], e["tier_id"], e["hardware_label"] = name, tier_id, label
+        else:
+            e["vram_32k_gb"] = vram.get(e["model"])   # None = not measured
+            e["prev_tier_gb"] = raw_tier; e["tier_moved"] = raw_tier != tier
+            e["_prev_tier_id"] = dict((t, i) for t, i, _ in GPU_TIERS).get(raw_tier)
         e["_tier_id"] = tier_id
         runs.append(e)
     return runs, skipped, len(files)
@@ -199,7 +210,7 @@ def main():
     for n in order:
         if n in srcs:
             cfg = srcs[n]
-            runs, skipped, nf = load_runs(n, cfg, a, no_tools); total += len(runs)
+            runs, skipped, nf = load_runs(n, cfg, a, no_tools, ov); total += len(runs)
             print(f"[{n}] imported {len(runs)} run(s) from {nf} file(s) in {cfg['dir']}")
             for f, w in skipped: print(f"  [{n}] skipped {f}: {w}")
             if cfg["kind"] == "gpu":
@@ -207,6 +218,16 @@ def main():
             else:
                 specs = [{"id": cfg["tier_id"], "label": cfg["label"], "vram_gb": None, "source": n, "hardware": cfg.get("hardware"),
                           "note": cfg.get("note"), "skipped_models": cfg.get("skipped", [])}]
+            if cfg["kind"] == "gpu":   # previous (v0.1.1) rank: same ranking rule, within the tier the run was tagged with
+                for t, i, _ in GPU_TIERS:
+                    best = {}
+                    for e in runs:
+                        if e["_prev_tier_id"] != i: continue
+                        k = (e["model"], e["quant"], e["engine"])
+                        if k not in best or (e["score"] or -1) > (best[k]["score"] or -1): best[k] = e
+                    prev = [e for e in sorted(best.values(), key=lambda e: (e["no_native_tools"], -(e["score"] or 0))) if not e["no_native_tools"]]
+                    for j, e in enumerate(prev): e["prev_rank"] = j + 1
+                    for e in best.values(): e.setdefault("prev_rank", None)
             for sp in specs:
                 best = {}
                 for e in runs:
@@ -235,9 +256,9 @@ def main():
     run_tier = lambda r: r.get("tier_id") or {t: i for t, i, _ in GPU_TIERS}.get(r.get("tier_gb"))
     for mm in models.values(): mm["runs"].sort(key=lambda e: (tier_pos.get(run_tier(e), 99), -(e["score"] or 0)))
     for t in out_tiers:
-        for e in t["entries"]: e.pop("_tier_id", None); e.pop("_cats", None)
+        for e in t["entries"]: e.pop("_tier_id", None); e.pop("_cats", None); e.pop("_prev_tier_id", None)
     for mm in models.values():
-        for e in mm["runs"]: e.pop("_tier_id", None); e.pop("_cats", None)
+        for e in mm["runs"]: e.pop("_tier_id", None); e.pop("_cats", None); e.pop("_prev_tier_id", None)
     th = ROOT / "results/template_hash.json"
     if th.exists():
         thd = json.loads(th.read_text())["models"]
@@ -247,6 +268,7 @@ def main():
                                   SOURCES.get(n, {}).get("dir", n) for n in order if any(source_of(t) == n for t in out_tiers)]))
     data = {"generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC") if models else None,
             "suite_version": SUITE_RESULTS_VERSION, "scoring_version": SCORING_VERSION, "prev_scoring_version": PREV_SCORING_VERSION,
+            "prev_results_version": PREV_RESULTS_VERSION, "tier_rule": "GPU tiers: measured VRAM at 32K context (KV cache included, `ollama ps` on the RTX 3090) <= card VRAM",
             "sensitivity": {"n": SENS_N, "concentration": SENS_CONC, "seed": SENS_SEED, "percentiles": [5, 95]},
             "bootstrap": {"B": 10000, "seed": 12345, "ci": 95}, "source": ", ".join(sources), "tiers": out_tiers, "models": sorted(models.values(), key=lambda m: m["name"])}
     a.out.write_text(json.dumps(data, indent=2) + "\n")

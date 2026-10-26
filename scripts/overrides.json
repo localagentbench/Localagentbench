@@ -3,5 +3,70 @@
   "no_native_tools": {
     "gemma3:4b": "The Ollama chat template for this model has no native tool-calling support, so the harness cannot issue tool calls. Its 0 on JSON/schema/tool/multi-step and 100 on injection reflect that, not model quality. Not comparable to other models.",
     "phi4:14b": "The Ollama chat template for this model has no native tool-calling support, so the harness cannot issue tool calls. Its 0 on JSON/schema/tool/multi-step and 100 on injection reflect that, not model quality. Not comparable to other models."
+  },
+  "vram_32k_gb": {
+    "_comment": "Measured GPU memory at the bench's 32K context (KV cache included): the SIZE column of `ollama ps` (Ollama 0.40.6, 100% GPU, CONTEXT 32768) logged on the RTX 3090 right after each model's main-suite run (ops/pod_gpu_run*.log). null = not measured: the model had already unloaded (empty ps line) or ps reported an implausible size (gemma4 models: 588 MB / 1.5 GB / 1.4 GB, smaller than their weights).",
+    "llama3.2:3b": 6.0,
+    "gemma3:4b": null,
+    "qwen2.5:7b": 6.6,
+    "qwen2.5-coder:7b": 6.6,
+    "llama3.1:8b": 9.2,
+    "qwen3:8b": 10.0,
+    "hermes3:8b": 9.0,
+    "mistral-nemo:12b": 12,
+    "qwen2.5:14b": 15,
+    "phi4:14b": null,
+    "mistral-small:24b": 19,
+    "qwen3:30b-a3b": 21,
+    "qwen3:4b": 7.6,
+    "mistral:7b": 8.9,
+    "deepseek-r1:8b": 10.0,
+    "gemma4:e4b": null,
+    "qwen3.5:9b": 6.7,
+    "qwen3:14b": 14,
+    "deepseek-r1:14b": 15,
+    "gemma4:12b": null,
+    "gpt-oss:20b": 12,
+    "gemma4:26b": null,
+    "qwen3.5:27b": 18,
+    "qwen3-coder:30b": 21,
+    "qwen3-vl:8b": 10,
+    "qwen2.5-coder:14b": 15,
+    "mistral-small3.2:24b": 19,
+    "qwen3.6:27b": 17,
+    "qwen3.8:27b": 17
+  },
+  "tier_override": {
+    "_comment": "Results v0.1.2 (2026-10-26): GPU tiers are assigned by measured VRAM at 32K context on the RTX 3090 (vram_32k_gb above must be <= the tier's card VRAM). These runs were tagged hardware.tier_gb=from_tier_gb in their raw result files; import_results.py publishes them in tier_gb and keeps the previous tier/rank as prev_tier_gb/prev_rank. Raw result files are unchanged.",
+    "mistral:7b": {
+      "from_tier_gb": 8,
+      "tier_gb": 16,
+      "since": "0.1.2"
+    },
+    "hermes3:8b": {
+      "from_tier_gb": 8,
+      "tier_gb": 16,
+      "since": "0.1.2"
+    },
+    "llama3.1:8b": {
+      "from_tier_gb": 8,
+      "tier_gb": 16,
+      "since": "0.1.2"
+    },
+    "qwen3:8b": {
+      "from_tier_gb": 8,
+      "tier_gb": 16,
+      "since": "0.1.2"
+    },
+    "deepseek-r1:8b": {
+      "from_tier_gb": 8,
+      "tier_gb": 16,
+      "since": "0.1.2"
+    },
+    "qwen3-vl:8b": {
+      "from_tier_gb": 8,
+      "tier_gb": 16,
+      "since": "0.1.2"
+    }
   }
 }

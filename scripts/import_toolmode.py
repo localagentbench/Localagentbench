@@ -54,7 +54,9 @@ for name in L2_MODELS:
         g = [y for y in mm["runs"] if y.get("tier_gb") and y.get("source") != "mac-m2"] or mm["runs"]; x = g[0]
     d = l2.get(name, {})
     level2.append({"name": name, "slug": mm["slug"] if mm else re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-"),
-                   "tier_label": x.get("tier_label") if x else None, "main_tool": x.get("tool") if x else None,
+                   "tier_label": x.get("tier_label") if x else None,
+                   "prev_tier_gb": x.get("prev_tier_gb") if x and x.get("tier_moved") else None,   # results v0.1.2 re-tiering
+                   "main_tool": x.get("tool") if x else None,
                    "main_multistep": x.get("multistep") if x else None,
                    "native": d.get("native"), "emulated": d.get("text-only"),
                    "missing": None if ("native" in d and "text-only" in d) else "no result: run did not complete (" + ", ".join(k for k in ("native", "text-only") if k not in d) + " missing)"})
